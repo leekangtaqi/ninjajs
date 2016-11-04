@@ -46,6 +46,7 @@ var Hub = function () {
         this._defaultRoute = null;
         this._location = null;
         this._prev = null;
+        this.state = {};
         this._title = null;
         this._emitter = emitter;
         this.refinedRoutes = [];
@@ -131,14 +132,12 @@ var Hub = function () {
                     }
                 }
             }
-            if (prefix) {
-                req.hints = req.hints.filter(function (hint) {
-                    return hint.length > prefix.length;
-                });
-                if (!req.hints.length) {
-                    return null;
-                }
-            }
+            // if(prefix){
+            //     req.hints = req.hints.filter(hint => hint.length > prefix.length);
+            //     if(!req.hints.length){
+            //         return null;
+            //     }
+            // }
             return req;
         }
     }, {
@@ -342,10 +341,11 @@ var Hub = function () {
                     /**
                      * mounted 
                      */
+                    _this2.state.hint = target.path;
                     var outletPoint = routes.filter(function (r) {
                         return r.component === target.parent;
                     })[0];
-                    var outlet = (outletPoint || _this2.root).tags['router-outlet'];
+                    var outlet = (outletPoint && outletPoint.tag || _this2.root).tags['router-outlet'];
 
                     if (!outlet.root.querySelector('div')) {
                         outlet.one('$mounted', done.bind(_this2));
@@ -600,10 +600,10 @@ var Hub = function () {
         },
         set: function set(val) {
             this._routes = val;
-            var routesMap = {};
-            Util.flatRoutes(val, routesMap);
-            Util.composePrefix(routesMap);
-            this.routesMap = routesMap;
+            // var routesMap = {};
+            // Util.flatRoutes(val, routesMap);
+            // Util.composePrefix(routesMap);
+            // this.routesMap = routesMap;
             Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
         }
     }, {
@@ -802,7 +802,7 @@ Util.flatAndComposePrefix = function (node, res) {
     }
     for (var i = 0, len = arr.length; i < len; i++) {
         var route = arr[i];
-        route.path = node.path + route.path;
+        route.path = (node.path || '') + route.path;
         route.parent = node.component;
         res.push(route);
         Util.flatAndComposePrefix(route, res);

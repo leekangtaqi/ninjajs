@@ -24,6 +24,7 @@ class Hub {
         this._defaultRoute = null;
         this._location = null;
         this._prev = null;
+        this.state = {};
         this._title = null;
         this._emitter = emitter;
         this.refinedRoutes = [];
@@ -91,12 +92,12 @@ class Hub {
                 }
             }
         }
-        if(prefix){
-            req.hints = req.hints.filter(hint => hint.length > prefix.length);
-            if(!req.hints.length){
-                return null;
-            }
-        }
+        // if(prefix){
+        //     req.hints = req.hints.filter(hint => hint.length > prefix.length);
+        //     if(!req.hints.length){
+        //         return null;
+        //     }
+        // }
         return req;
     } 
 
@@ -231,8 +232,9 @@ class Hub {
             /**
              * mounted 
              */
+            this.state.hint = target.path; 
             let outletPoint = routes.filter(r => r.component === target.parent)[0];
-            let outlet = (outletPoint || this.root).tags['router-outlet'];
+            let outlet = (outletPoint && outletPoint.tag || this.root).tags['router-outlet'];
 
             if(!outlet.root.querySelector('div')){
                 outlet.one('$mounted', done.bind(this));
@@ -448,10 +450,10 @@ class Hub {
 
     set routes(val){
         this._routes = val;
-        var routesMap = {};
-        Util.flatRoutes(val, routesMap);
-        Util.composePrefix(routesMap);
-        this.routesMap = routesMap;
+        // var routesMap = {};
+        // Util.flatRoutes(val, routesMap);
+        // Util.composePrefix(routesMap);
+        // this.routesMap = routesMap;
         Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
     }
 
@@ -514,7 +516,7 @@ class Util {
         }
         for(var i=0, len=arr.length; i<len; i++){
             let route = arr[i];
-            route.path = node.path + route.path;
+            route.path = (node.path || '') + route.path;
             route.parent = node.component;
             res.push(route);
             Util.flatAndComposePrefix(route, res)
