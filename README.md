@@ -1,6 +1,6 @@
 # Ninjia
 
-<img width="320" src="https://github.com/leekangtaqi/pagan/raw/master/logo.png"/>
+<img width="240" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
 
 Fullstack framework based on riot, redux, express.
 
