@@ -42,7 +42,7 @@ var Hub = function () {
         this._view = null;
         this._busy = false;
         this._routes = [];
-        this._routesMap = {};
+        // this._routesMap = {};
         this._defaultRoute = null;
         this._location = null;
         this._prev = null;
@@ -343,7 +343,7 @@ var Hub = function () {
                      */
                     _this2.state.hint = target.path;
                     var outletPoint = routes.filter(function (r) {
-                        return r.component === target.parent;
+                        return r.id === target.parent;
                     })[0];
                     var outlet = (outletPoint && outletPoint.tag || _this2.root).tags['router-outlet'];
 
@@ -606,14 +606,15 @@ var Hub = function () {
             // this.routesMap = routesMap;
             Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
         }
-    }, {
-        key: 'routesMap',
-        get: function get() {
-            return this._routesMap;
-        },
-        set: function set(val) {
-            this._routesMap = val;
-        }
+
+        // get routesMap(){
+        // 	return this._routesMap;
+        // }
+
+        // set routesMap(val){
+        // 	this._routesMap = val;
+        // }
+
     }, {
         key: 'defaultRoute',
         get: function get() {
@@ -712,44 +713,43 @@ var Util = function () {
             }
             return res;
         }
-    }, {
-        key: 'flatRoutes',
-        value: function flatRoutes(route, routesMap) {
-            var i = 0,
-                len = route.children.length;
-            for (; i < len; i++) {
-                var r = route.children[i];
-                r.parent = route.component;
-                routesMap[r.component] = r;
-                if (r.children) {
-                    Util.flatRoutes(r, routesMap);
-                }
-            }
-        }
-    }, {
-        key: 'composePrefix',
-        value: function composePrefix(routesMap) {
-            Object.keys(routesMap).map(function (routeName) {
-                var route = routesMap[routeName];
-                var recurPrefix = function recurPrefix(n) {
-                    if (!n) {
-                        return '';
-                    }
-                    if (n.parent) {
-                        var parentRoute = routesMap[n.parent];
-                        if (parentRoute && !parentRoute.pathDone) {
-                            n.path = recurPrefix(parentRoute) + n.path;
-                            n.pathDone = true;
-                        } else {
-                            n.path = parentRoute && parentRoute.path || '' + n.path;
-                        }
-                        return n.path;
-                    }
-                    return n.path;
-                };
-                return recurPrefix(route);
-            });
-        }
+
+        // static flatRoutes(route, routesMap){
+        // 	let i = 0, len = route.children.length; 
+        // 	for(; i<len; i++){
+        // 		let r = route.children[i];
+        // 		r.parent = route.component;
+        // 		routesMap[r.component] = r;
+        // 		if(r.children){
+        // 			Util.flatRoutes(r, routesMap);
+        // 		}
+        // 	}
+        // }
+
+        // static composePrefix(routesMap){
+        // 	Object.keys(routesMap)
+        // 		.map(routeName => {
+        // 			let route = routesMap[routeName]
+        // 			const recurPrefix = n => {
+        // 				if(!n){
+        // 					return '';
+        // 				}
+        // 				if(n.parent){
+        // 					let parentRoute = routesMap[n.parent];
+        // 					if(parentRoute && !parentRoute.pathDone){
+        // 						n.path = recurPrefix(parentRoute) + n.path;
+        // 						n.pathDone = true;
+        // 					}else{
+        // 						n.path = parentRoute && parentRoute.path || '' + n.path;
+        // 					}
+        // 					return n.path;
+        // 				}
+        // 				return n.path;
+        // 			}
+        // 			return recurPrefix(route);
+        // 		})
+        // }
+
     }, {
         key: 'compareUrl',
         value: function compareUrl(u1, u2) {

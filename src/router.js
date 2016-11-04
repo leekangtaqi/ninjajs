@@ -20,7 +20,7 @@ class Hub {
         this._view = null;
         this._busy = false;
         this._routes = [];
-        this._routesMap = {};
+        // this._routesMap = {};
         this._defaultRoute = null;
         this._location = null;
         this._prev = null;
@@ -233,7 +233,7 @@ class Hub {
              * mounted 
              */
             this.state.hint = target.path; 
-            let outletPoint = routes.filter(r => r.component === target.parent)[0];
+            let outletPoint = routes.filter(r => r.id === target.parent)[0];
             let outlet = (outletPoint && outletPoint.tag || this.root).tags['router-outlet'];
 
             if(!outlet.root.querySelector('div')){
@@ -457,13 +457,13 @@ class Hub {
         Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
     }
 
-		get routesMap(){
-			return this._routesMap;
-		}
+		// get routesMap(){
+		// 	return this._routesMap;
+		// }
 
-		set routesMap(val){
-			this._routesMap = val;
-		}
+		// set routesMap(val){
+		// 	this._routesMap = val;
+		// }
 
     get defaultRoute(){
         return this._defaultRoute;
@@ -554,41 +554,41 @@ class Util {
         return res;
     }
 
-		static flatRoutes(route, routesMap){
-			let i = 0, len = route.children.length; 
-			for(; i<len; i++){
-				let r = route.children[i];
-				r.parent = route.component;
-				routesMap[r.component] = r;
-				if(r.children){
-					Util.flatRoutes(r, routesMap);
-				}
-			}
-		}
+		// static flatRoutes(route, routesMap){
+		// 	let i = 0, len = route.children.length; 
+		// 	for(; i<len; i++){
+		// 		let r = route.children[i];
+		// 		r.parent = route.component;
+		// 		routesMap[r.component] = r;
+		// 		if(r.children){
+		// 			Util.flatRoutes(r, routesMap);
+		// 		}
+		// 	}
+		// }
 
-		static composePrefix(routesMap){
-			Object.keys(routesMap)
-				.map(routeName => {
-					let route = routesMap[routeName]
-					const recurPrefix = n => {
-						if(!n){
-							return '';
-						}
-						if(n.parent){
-							let parentRoute = routesMap[n.parent];
-							if(parentRoute && !parentRoute.pathDone){
-								n.path = recurPrefix(parentRoute) + n.path;
-								n.pathDone = true;
-							}else{
-								n.path = parentRoute && parentRoute.path || '' + n.path;
-							}
-							return n.path;
-						}
-						return n.path;
-					}
-					return recurPrefix(route);
-				})
-		}
+		// static composePrefix(routesMap){
+		// 	Object.keys(routesMap)
+		// 		.map(routeName => {
+		// 			let route = routesMap[routeName]
+		// 			const recurPrefix = n => {
+		// 				if(!n){
+		// 					return '';
+		// 				}
+		// 				if(n.parent){
+		// 					let parentRoute = routesMap[n.parent];
+		// 					if(parentRoute && !parentRoute.pathDone){
+		// 						n.path = recurPrefix(parentRoute) + n.path;
+		// 						n.pathDone = true;
+		// 					}else{
+		// 						n.path = parentRoute && parentRoute.path || '' + n.path;
+		// 					}
+		// 					return n.path;
+		// 				}
+		// 				return n.path;
+		// 			}
+		// 			return recurPrefix(route);
+		// 		})
+		// }
 
     static compareUrl(u1, u2){
         var r = [];
