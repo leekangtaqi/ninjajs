@@ -335,7 +335,7 @@ var Hub = function () {
                                 }
                             });
                         }
-                        return this.recurMatch(ctx, target, level + 1, this.routesMap[target.tag.opts.riotTag].children, components.concat(target));
+                        return this.recurMatch(ctx, target, level + 1, routes, components.concat(target));
                     };
 
                     /**

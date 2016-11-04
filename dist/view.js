@@ -44,8 +44,14 @@ var rendererCreator = function rendererCreator(router) {
             }
             renderer.leave(tag, parent);
             if (tag.tags && Object.keys(tag.tags).length) {
-                Object.keys(tag.tags).forEach(function (tagName) {
-                    var t = tag.tags[tagName];
+                Object.keys(tag.tags).map(function (tagName, i) {
+                    var tmp = tag.tags[tagName];
+                    var t = null;
+                    if (Array.isArray(tmp)) {
+                        t = tmp[i];
+                    } else {
+                        t = tmp;
+                    }
                     if (t && t.opts.show && !t.cache) {
                         renderer.leave(t, tag);
                         return renderer.leaveDownstream(t, tag);
