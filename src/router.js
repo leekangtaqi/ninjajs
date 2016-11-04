@@ -230,7 +230,9 @@ class Hub {
             /**
              * mounted 
              */
-            let outlet = (node || this.root).tags['router-outlet'];
+            let outletPoint = routes.filter(r => r.component === target.parent)[0];
+            let outlet = (outletPoint || this.root).tags['router-outlet'];
+
             if(!outlet.root.querySelector('div')){
                 outlet.one('$mounted', done.bind(this));
             }else{
@@ -271,7 +273,7 @@ class Hub {
         this.trigger('busy-pending');
         let context = { req };
         let refinedRoutes = [];
-        Util.flatAndComposePrefix(this.routes.children, '', refinedRoutes);
+        Util.flatAndComposePrefix(this.routes, refinedRoutes);
         return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
     }
 
@@ -505,10 +507,12 @@ class Util {
         return res;
     }
 
-    static flatAndComposePrefix = (arr, prefix = "", res) => {
+    static flatAndComposePrefix = (node, res) => {
+        var arr = node.children;
         for(var i=0, len=arr.length; i<len; i++){
             let route = arr[i];
             route.path = prefix + route.path;
+            route.parent = node.component;
             res.push(route);
             if(route.children){
                 Util.flatAndComposePrefix(route.children, route.path, res)

@@ -341,7 +341,11 @@ var Hub = function () {
                     /**
                      * mounted 
                      */
-                    var outlet = (node || _this2.root).tags['router-outlet'];
+                    var outletPoint = routes.filter(function (r) {
+                        return r.component === target.parent;
+                    })[0];
+                    var outlet = (outletPoint || _this2.root).tags['router-outlet'];
+
                     if (!outlet.root.querySelector('div')) {
                         outlet.one('$mounted', done.bind(_this2));
                     } else {
@@ -365,7 +369,7 @@ var Hub = function () {
             this.trigger('busy-pending');
             var context = { req: req };
             var refinedRoutes = [];
-            Util.flatAndComposePrefix(this.routes.children, '', refinedRoutes);
+            Util.flatAndComposePrefix(this.routes, refinedRoutes);
             return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
         }
 
@@ -791,13 +795,12 @@ var Util = function () {
     return Util;
 }();
 
-Util.flatAndComposePrefix = function (arr) {
-    var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-    var res = arguments[2];
-
+Util.flatAndComposePrefix = function (node, res) {
+    var arr = node.children;
     for (var i = 0, len = arr.length; i < len; i++) {
         var route = arr[i];
         route.path = prefix + route.path;
+        route.parent = node.component;
         res.push(route);
         if (route.children) {
             Util.flatAndComposePrefix(route.children, route.path, res);
