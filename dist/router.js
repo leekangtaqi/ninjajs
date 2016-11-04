@@ -331,7 +331,7 @@ var Hub = function () {
                         if (target.tag) {
                             return this.routeTo(target, ctx, hint, false, function () {
                                 if (hints[level + 1]) {
-                                    return _this3.recurMatch(ctx, target.tag, level + 1, _this3.routesMap[target.tag.opts.riotTag].children, components.concat(target));
+                                    return _this3.recurMatch(ctx, target.tag, level + 1, routes, components.concat(target));
                                 }
                             });
                         }
@@ -364,7 +364,8 @@ var Hub = function () {
             this.busy = true;
             this.trigger('busy-pending');
             var context = { req: req };
-            return this.recurMatch(context, this.root || {}, 0, this.routes.children, []);
+            var refinedRoutes = Util.mapToArray(this.routesMap);
+            return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
         }
 
         /**
@@ -666,6 +667,15 @@ var Util = function () {
             }
 
             return res;
+        }
+    }, {
+        key: 'mapToArray',
+        value: function mapToArray(o) {
+            var arr = [];
+            for (var p in o) {
+                arr.push(o[p]);
+            }
+            return arr;
         }
     }, {
         key: 'completePart',

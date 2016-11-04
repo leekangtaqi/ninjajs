@@ -249,7 +249,7 @@ class Hub {
                 if(target.tag){
                     return this.routeTo(target, ctx, hint, false, () => {
                         if(hints[level + 1]){
-                                return this.recurMatch(ctx, target.tag, level + 1, this.routesMap[target.tag.opts.riotTag].children, components.concat(target));
+                                return this.recurMatch(ctx, target.tag, level + 1, routes, components.concat(target));
                         }
                     });
                 }
@@ -270,7 +270,8 @@ class Hub {
         this.busy = true;
         this.trigger('busy-pending');
         let context = { req };
-        return this.recurMatch(context, this.root || {}, 0, this.routes.children, []);
+        let refinedRoutes = Util.mapToArray(this.routesMap);
+        return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
     }
 
     /**
@@ -501,6 +502,14 @@ class Util {
             }
         }
         return res;
+    }
+
+    static mapToArray(o){
+        var arr = [];
+        for(var p in o){
+            arr.push(o[p])
+        }
+        return arr;
     }
 
     static completePart(uri){
