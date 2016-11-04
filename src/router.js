@@ -511,7 +511,7 @@ class Util {
         var arr = node.children;
         for(var i=0, len=arr.length; i<len; i++){
             let route = arr[i];
-            route.path = prefix + route.path;
+            route.path = node.path + route.path;
             route.parent = node.component;
             res.push(route);
             if(route.children){

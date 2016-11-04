@@ -799,7 +799,7 @@ Util.flatAndComposePrefix = function (node, res) {
     var arr = node.children;
     for (var i = 0, len = arr.length; i < len; i++) {
         var route = arr[i];
-        route.path = prefix + route.path;
+        route.path = node.path + route.path;
         route.parent = node.component;
         res.push(route);
         if (route.children) {
