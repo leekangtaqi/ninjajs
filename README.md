@@ -2,7 +2,7 @@
 
 <img width="240" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
 
-Fullstack framework based on riot, redux, express.
+frontend framework based on riot, redux, express.
 
 ---
 
