@@ -517,7 +517,7 @@ class Util {
         for(var i=0, len=arr.length; i<len; i++){
             let route = arr[i];
             route.path = (node.path || '') + route.path;
-            route.parent = node.component;
+            route.parent = node.id || '';
             route.id = Util.genId(8);
             res.push(route);
             Util.flatAndComposePrefix(route, res)

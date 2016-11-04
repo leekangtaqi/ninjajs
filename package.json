@@ -1,6 +1,6 @@
 {
   "name": "ninjiajs",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "frontend framework base on riot and redux",
   "main": "dist/index.js",
   "author": "leekangtaqi",
