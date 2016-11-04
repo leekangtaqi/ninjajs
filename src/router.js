@@ -270,7 +270,8 @@ class Hub {
         this.busy = true;
         this.trigger('busy-pending');
         let context = { req };
-        let refinedRoutes = Util.flatAndComposePrefix(this.routes.children);
+        let refinedRoutes = [];
+        Util.flatAndComposePrefix(this.routes.children, '', refinedRoutes);
         return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
     }
 
