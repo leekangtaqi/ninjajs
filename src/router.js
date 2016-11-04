@@ -20,7 +20,7 @@ class Hub {
         this._view = null;
         this._busy = false;
         this._routes = [];
-				this._routesMap = {};
+        this._routesMap = {};
         this._defaultRoute = null;
         this._location = null;
         this._prev = null;
@@ -270,7 +270,7 @@ class Hub {
         this.busy = true;
         this.trigger('busy-pending');
         let context = { req };
-        let refinedRoutes = Util.mapToArray(this.routesMap);
+        let refinedRoutes = Util.flatAndComposePrefix(this.routes.children);
         return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
     }
 
@@ -446,10 +446,10 @@ class Hub {
 
     set routes(val){
         this._routes = val;
-				var routesMap = {};
-				Util.flatRoutes(val, routesMap);
-				Util.composePrefix(routesMap);
-				this.routesMap = routesMap;
+        var routesMap = {};
+        Util.flatRoutes(val, routesMap);
+        Util.composePrefix(routesMap);
+        this.routesMap = routesMap;
     }
 
 		get routesMap(){
@@ -504,12 +504,15 @@ class Util {
         return res;
     }
 
-    static mapToArray(o){
-        var arr = [];
-        for(var p in o){
-            arr.push(o[p])
+    static flatAndComposePrefix = (arr, prefix = "", res) => {
+        for(var i=0, len=arr.length; i<len; i++){
+            let route = arr[i];
+            route.path = prefix + route.path;
+            res.push(route);
+            if(route.children){
+                flatAndComposePrefix(route.children, route.path, res)
+            }
         }
-        return arr;
     }
 
     static completePart(uri){
