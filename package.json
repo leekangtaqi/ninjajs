@@ -1,6 +1,6 @@
 {
   "name": "ninjiajs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "frontend framework base on riot and redux",
   "main": "dist/index.js",
   "author": "leekangtaqi",
@@ -15,7 +15,6 @@
     "url": "https://github.com/leekangtaqi/pagan.git"
   },
   "dependencies": {
-    "riot": "^2.6.4",
     "redux": "*"
   },
   "devDependencies": {
