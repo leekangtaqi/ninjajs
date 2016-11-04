@@ -25,6 +25,7 @@ class Ninjia {
 				hub: {},
 				tags: {}
 		};
+		this.emitter = riot.observable({});
 		container.widgets = this._widgets = {};
 	}
 
@@ -85,19 +86,19 @@ class Ninjia {
 	}
 
 	on(...args){
-		return this.framework.on.apply(this.framework, args)
+		return this.emitter.on.apply(this.emitter, args)
 	}
 
 	one(...args){
-		return this.framework.one.apply(this.framework, args)
+		return this.emitter.one.apply(this.emitter, args)
 	}
 
 	off(...args){
-		return this.framework.off.apply(this.framework, args)
+		return this.emitter.off.apply(this.emitter, args)
 	}
 
 	trigger(...args){
-		return this.framework.trigger.apply(this.framework, args)
+		return this.emitter.trigger.apply(this.emitter, args)
 	}
 
 	get container(){
