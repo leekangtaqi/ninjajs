@@ -814,7 +814,7 @@ Util.flatAndComposePrefix = function (node, res) {
     for (var i = 0, len = arr.length; i < len; i++) {
         var route = arr[i];
         route.path = (node.path || '') + route.path;
-        route.parent = node.component;
+        route.parent = node.id || '';
         route.id = Util.genId(8);
         res.push(route);
         Util.flatAndComposePrefix(route, res);
