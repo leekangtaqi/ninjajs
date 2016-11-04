@@ -26,6 +26,7 @@ class Hub {
         this._prev = null;
         this._title = null;
         this._emitter = emitter;
+        this.refinedRoutes = [];
     }
 
     startup(){
@@ -272,9 +273,7 @@ class Hub {
         this.busy = true;
         this.trigger('busy-pending');
         let context = { req };
-        let refinedRoutes = [];
-        Util.flatAndComposePrefix(this.routes, refinedRoutes);
-        return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
+        return this.recurMatch(context, this.root || {}, 0, this.refinedRoutes, []);
     }
 
     /**
@@ -453,6 +452,7 @@ class Hub {
         Util.flatRoutes(val, routesMap);
         Util.composePrefix(routesMap);
         this.routesMap = routesMap;
+        Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
     }
 
 		get routesMap(){

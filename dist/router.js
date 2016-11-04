@@ -48,6 +48,7 @@ var Hub = function () {
         this._prev = null;
         this._title = null;
         this._emitter = emitter;
+        this.refinedRoutes = [];
     }
 
     _createClass(Hub, [{
@@ -368,9 +369,7 @@ var Hub = function () {
             this.busy = true;
             this.trigger('busy-pending');
             var context = { req: req };
-            var refinedRoutes = [];
-            Util.flatAndComposePrefix(this.routes, refinedRoutes);
-            return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
+            return this.recurMatch(context, this.root || {}, 0, this.refinedRoutes, []);
         }
 
         /**
@@ -605,6 +604,7 @@ var Hub = function () {
             Util.flatRoutes(val, routesMap);
             Util.composePrefix(routesMap);
             this.routesMap = routesMap;
+            Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
         }
     }, {
         key: 'routesMap',
