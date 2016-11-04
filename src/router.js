@@ -511,7 +511,7 @@ class Util {
             route.path = prefix + route.path;
             res.push(route);
             if(route.children){
-                flatAndComposePrefix(route.children, route.path, res)
+                Util.flatAndComposePrefix(route.children, route.path, res)
             }
         }
     }
