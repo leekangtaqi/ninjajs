@@ -797,14 +797,15 @@ var Util = function () {
 
 Util.flatAndComposePrefix = function (node, res) {
     var arr = node.children;
+    if (!arr) {
+        return;
+    }
     for (var i = 0, len = arr.length; i < len; i++) {
         var route = arr[i];
         route.path = node.path + route.path;
         route.parent = node.component;
         res.push(route);
-        if (route.children) {
-            Util.flatAndComposePrefix(route.children, route.path, res);
-        }
+        Util.flatAndComposePrefix(route, route.path, res);
     }
 };
 
