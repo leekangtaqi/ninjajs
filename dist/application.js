@@ -58,6 +58,7 @@ var Ninjia = function () {
 			hub: {},
 			tags: {}
 		};
+		this.emitter = _riot2.default.observable({});
 		container.widgets = this._widgets = {};
 	}
 
@@ -172,7 +173,7 @@ var Ninjia = function () {
 				args[_key3] = arguments[_key3];
 			}
 
-			return this.framework.on.apply(this.framework, args);
+			return this.emitter.on.apply(this.emitter, args);
 		}
 	}, {
 		key: 'one',
@@ -181,7 +182,7 @@ var Ninjia = function () {
 				args[_key4] = arguments[_key4];
 			}
 
-			return this.framework.one.apply(this.framework, args);
+			return this.emitter.one.apply(this.emitter, args);
 		}
 	}, {
 		key: 'off',
@@ -190,7 +191,7 @@ var Ninjia = function () {
 				args[_key5] = arguments[_key5];
 			}
 
-			return this.framework.off.apply(this.framework, args);
+			return this.emitter.off.apply(this.emitter, args);
 		}
 	}, {
 		key: 'trigger',
@@ -199,7 +200,7 @@ var Ninjia = function () {
 				args[_key6] = arguments[_key6];
 			}
 
-			return this.framework.trigger.apply(this.framework, args);
+			return this.emitter.trigger.apply(this.emitter, args);
 		}
 	}, {
 		key: 'container',
