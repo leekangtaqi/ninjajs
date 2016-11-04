@@ -364,7 +364,7 @@ var Hub = function () {
             this.busy = true;
             this.trigger('busy-pending');
             var context = { req: req };
-            var refinedRoutes = Util.mapToArray(this.routesMap);
+            var refinedRoutes = Util.flatAndComposePrefix(this.routes.children);
             return this.recurMatch(context, this.root || {}, 0, refinedRoutes, []);
         }
 
@@ -669,15 +669,6 @@ var Util = function () {
             return res;
         }
     }, {
-        key: 'mapToArray',
-        value: function mapToArray(o) {
-            var arr = [];
-            for (var p in o) {
-                arr.push(o[p]);
-            }
-            return arr;
-        }
-    }, {
         key: 'completePart',
         value: function completePart(uri) {
             return uri.startsWith('/') ? uri : '/' + uri;
@@ -798,6 +789,20 @@ var Util = function () {
 
     return Util;
 }();
+
+Util.flatAndComposePrefix = function (arr) {
+    var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+    var res = arguments[2];
+
+    for (var i = 0, len = arr.length; i < len; i++) {
+        var route = arr[i];
+        route.path = prefix + route.path;
+        res.push(route);
+        if (route.children) {
+            flatAndComposePrefix(route.children, route.path, res);
+        }
+    }
+};
 
 var hub = new Hub(_riot2.default.observable());
 
