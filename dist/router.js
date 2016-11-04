@@ -805,7 +805,7 @@ Util.flatAndComposePrefix = function (node, res) {
         route.path = node.path + route.path;
         route.parent = node.component;
         res.push(route);
-        Util.flatAndComposePrefix(route, route.path, res);
+        Util.flatAndComposePrefix(route, res);
     }
 };
 
