@@ -38,8 +38,14 @@ const rendererCreator = router => {
             }
             renderer.leave(tag, parent);
             if(tag.tags && Object.keys(tag.tags).length){
-                Object.keys(tag.tags).forEach(tagName => {
-                    let t = tag.tags[tagName];
+                Object.keys(tag.tags).map((tagName, i) => {
+                    let tmp = tag.tags[tagName];
+                    let t = null;
+                    if(Array.isArray(tmp)){
+                        t = tmp[i];
+                    }else{
+                        t = tmp;
+                    }
                     if(t && t.opts.show && !t.cache){
                         renderer.leave(t, tag);
                         return renderer.leaveDownstream(t, tag)
