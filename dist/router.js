@@ -265,42 +265,22 @@ var Hub = function () {
             var target = null;
             var targetRoutes = routes ? routes : this.routes;
 
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = targetRoutes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var route = _step.value;
-
-                    var matchRes = this.match(Util.completePart(route.path), Util.completePart(hint));
-                    if (matchRes) {
-                        //assign object to context
-                        if (!ctx.req.params) {
-                            ctx.req.params = {};
-                        }
-                        Object.assign(ctx.req.params, matchRes);
-                        !ctx.req.body && (ctx.req.body = {});
-                        Object.assign(ctx.req.body, Util.omit(route, "resolve", "redirectTo", "tag", "path", "name") || {});
-                        target = route;
-                        break;
+            for (var i = 0, len = targetRoutes.length; i < len; i++) {
+                // for(let route of targetRoutes){
+                var route = targetRoutes[i];
+                var matchRes = this.match(Util.completePart(route.path), Util.completePart(hint));
+                if (matchRes) {
+                    //assign object to context
+                    if (!ctx.req.params) {
+                        ctx.req.params = {};
                     }
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
+                    Object.assign(ctx.req.params, matchRes);
+                    !ctx.req.body && (ctx.req.body = {});
+                    Object.assign(ctx.req.body, Util.omit(route, "resolve", "redirectTo", "tag", "path", "name") || {});
+                    target = route;
+                    break;
                 }
             }
-
             if (!target && level === hints.length) {
                 if (node.defaultRoute) {
                     this.routeTo(node.defaultRoute, ctx, hint, true);
@@ -646,33 +626,12 @@ var Util = function () {
         key: 'distinct',
         value: function distinct(arr) {
             var res = [];
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = arr[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var o = _step2.value;
-
-                    if (res.indexOf(o) < 0) {
-                        res.push(o);
-                    }
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
+            for (var i = 0, len = arr.length; i < len; i++) {
+                var o = arr[i];
+                if (res.indexOf(o) < 0) {
+                    res.push(o);
                 }
             }
-
             return res;
         }
     }, {

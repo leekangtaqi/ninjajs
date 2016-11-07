@@ -201,7 +201,9 @@ class Hub {
         let target = null; 
         let targetRoutes = routes ? routes : this.routes;
 
-        for(let route of targetRoutes){
+        for(let i=0, len= targetRoutes.length; i<len; i++){
+        // for(let route of targetRoutes){
+            let route = targetRoutes[i];
             let matchRes = this.match(Util.completePart(route.path), Util.completePart(hint));
             if(matchRes){
                 //assign object to context
@@ -502,7 +504,8 @@ class Hub {
 class Util {
     static distinct(arr){
         let res = [];
-        for(let o of arr){
+        for(let i=0, len=arr.length; i<len; i++){
+            let o = arr[i];
             if(res.indexOf(o) < 0){
                 res.push(o);
             }

@@ -44,7 +44,8 @@ class TagContainerProxy {
     }
     loop(fn){
         if(this.modern === true){
-            for(let c of this.container){
+            for(let i=0, len=this.container.length; i<len; i++){
+                let c = this.container[i]
                 fn(c);
             }
             return;
