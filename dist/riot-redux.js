@@ -268,7 +268,7 @@ var isShow = function isShow(c, state) {
     return c.opts.show || c.opts.$show;
 };
 var isPresent = function isPresent(c, state) {
-    return (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && state.lastAction.payload === getTagName(c);
+    return (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && state.lastAction.payload === c;
 };
 var getTagName = function getTagName(c) {
     return c.opts && c.opts.riotTag || c.root.localName;

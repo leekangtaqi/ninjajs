@@ -25,13 +25,13 @@ var route = function route() {
 
     switch (action.type) {
         case '$enter':
-            var tagName = action.payload;
+            var tagName = action.payload.$routePath;;
             var newOne = _defineProperty({}, tagName, true);
             return Object.assign({}, route, {
                 $views: _extends({}, route.$views, newOne)
             });
         case '$leave':
-            var tagName = action.payload;
+            var tagName = action.payload.$routePath;;
             return Object.assign({}, route, {
                 $views: Object.keys(route.$views).filter(function (v) {
                     return v != tagName;

@@ -322,6 +322,7 @@ var Hub = function () {
                         var outletEl = outlet.root.querySelector('div[data-tag-name="' + target.component + '"]');
                         if (!target.tag) {
                             var tag = _riot2.default.mount(outletEl, '' + target.component)[0];
+                            tag.$routePath = target.path;
                             if (tag) {
                                 outlet.parent.tags[tag.opts.riotTag] = tag;
                                 tag.parent = outlet.parent;
@@ -347,7 +348,7 @@ var Hub = function () {
                     })[0];
                     var outlet = (outletPoint && outletPoint.tag || _this2.root).tags['router-outlet'];
 
-                    if (!outlet.root.querySelector('div')) {
+                    if (!outlet.$isMounted) {
                         outlet.one('$mounted', done.bind(_this2));
                     } else {
                         done.apply(_this2);

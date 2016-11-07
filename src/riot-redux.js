@@ -202,7 +202,7 @@ export const provide = store => {
 };
 
 const isShow = (c, state) => c.opts.show || c.opts.$show;
-const isPresent = (c, state) => (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && state.lastAction.payload === getTagName(c);
+const isPresent = (c, state) => (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && (state.lastAction.payload === c);
 const getTagName = c => c.opts && c.opts.riotTag || c.root.localName; 
 
 let busy = false;
