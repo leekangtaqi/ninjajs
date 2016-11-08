@@ -1,4 +1,4 @@
-# Ninjia
+# NinjiaJs
 
 <img width="240" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
 
