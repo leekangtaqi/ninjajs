@@ -18,40 +18,72 @@ const rendererCreator = router => {
         },
 
         leaveUpstream: tag => {
-            if(!tag || !tag.parent || !tag.parent.tags){
+            if (!tag || !tag.parent || !tag.parent.tags || !tag.parent.tags['router-outlet']) {
                 return;
             }
-            Object.keys(tag.parent.tags)
-            .map(k => tag.parent.tags[k])
-            .filter(t => t != tag)
-            .forEach(t => {
-                if(t && t.opts.show){
-                    renderer.leaveDownstream(t, tag)
+            let routes = tag.parent.tags['router-outlet'].routes;
+            let siblings = tag.parent.tags['router-outlet'].routes.filter(r => r.tag && r.tag != tag);
+            if(!siblings || !siblings.length){
+                return false;
+            }
+            siblings.map(t => t.tag).forEach(t => {
+                if (t && (t.opts.show || t.opts.$show)) {
+                    renderer.leaveDownstream(t, tag);
                 }
-            }); 
+            })
             return renderer.leaveUpstream(tag.parent);
+            // if(!tag || !tag.parent || !tag.parent.tags){
+            //     return;
+            // }
+            // Object.keys(tag.parent.tags)
+            // .map(k => tag.parent.tags[k])
+            // .filter(t => t != tag)
+            // .forEach(t => {
+            //     if(t && t.opts.show){
+            //         renderer.leaveDownstream(t, tag)
+            //     }
+            // }); 
+            // return renderer.leaveUpstream(tag.parent);
         },
 
         leaveDownstream: (tag, parent) => {
-            if(!tag){
+            if (!tag) {
                 return;
             }
             renderer.leave(tag, parent);
-            if(tag.tags && Object.keys(tag.tags).length){
-                Object.keys(tag.tags).map((tagName, i) => {
-                    let tmp = tag.tags[tagName];
-                    let t = null;
-                    if(Array.isArray(tmp)){
-                        t = tmp[i];
-                    }else{
-                        t = tmp;
-                    }
-                    if(t && t.opts.show && !t.cache){
-                        renderer.leave(t, tag);
-                        return renderer.leaveDownstream(t, tag)
-                    }
-                })
+            let outlet = tag.tags['router-outlet'];
+            if(!outlet){
+                return;
             }
+            let routes = outlet.routes;
+            if(!routes){
+                return;
+            }
+            routes.map(r => r.tag).forEach(t => {
+                if (t && t.opts.$show && !t.cache) {
+                    renderer.leave(t, tag);
+                    return renderer.leaveDownstream(t, tag);
+                }
+            })
+            // if(!tag){
+            //     return;
+            // }
+            // renderer.leave(tag, parent);
+            // if(tag.tags && Object.keys(tag.tags).length){
+            //     Object.keys(tag.tags).map((tagName, i) => {
+            //         let tmp = tag.tags[tagName];
+            //         let t = null;
+            //         if(Array.isArray(tmp)){
+            //             t = tmp[i];
+            //         }else{
+            //             t = tmp;
+            //         }
+            //         if(t && t.opts.show && !t.cache){
+            //             renderer.leave(t, tag);
+            //             return renderer.leaveDownstream(t, tag)
+            //         }
+            //     })
+            // }
         },
 
         leave: (tag, to, callback) => {

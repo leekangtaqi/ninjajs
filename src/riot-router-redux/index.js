@@ -9,9 +9,9 @@ function syncHistoryWithStore(hub, store){
     hub.off('state-search').on('state-search', ({param, value}) => {
         let route = store.getState().route;
         let query = route.data.req.query;
-        if(query[param] && (query[param] = value)){
-            return;
-        }
+        // if(query[param] && (query[param] = value)){
+        //     return;
+        // }
         query[param] = value;
         riot.route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
     });
@@ -29,7 +29,7 @@ function syncHistoryWithStore(hub, store){
             payload: query
         })
     })
-    hub.off('busy-pending').on('busy-pending', ()=>{
+    hub.off('busy-pending').on('busy-pending', () => {
         // store.dispatch({
         //     type: 'maskShow'
         // });
@@ -37,7 +37,7 @@ function syncHistoryWithStore(hub, store){
         //     type: '$routeBusy'
         // })
     });
-    hub.off('busy-resolve').on('busy-resolve', ()=>{
+    hub.off('busy-resolve').on('busy-resolve', () => {
         // store.dispatch({
         //     type: 'maskHidden'
         // });
