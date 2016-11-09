@@ -453,20 +453,8 @@ class Hub {
 
     set routes(val){
         this._routes = val;
-        // var routesMap = {};
-        // Util.flatRoutes(val, routesMap);
-        // Util.composePrefix(routesMap);
-        // this.routesMap = routesMap;
         Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
     }
-
-		// get routesMap(){
-		// 	return this._routesMap;
-		// }
-
-		// set routesMap(val){
-		// 	this._routesMap = val;
-		// }
 
     get defaultRoute(){
         return this._defaultRoute;
@@ -557,42 +545,6 @@ class Util {
         }
         return res;
     }
-
-		// static flatRoutes(route, routesMap){
-		// 	let i = 0, len = route.children.length; 
-		// 	for(; i<len; i++){
-		// 		let r = route.children[i];
-		// 		r.parent = route.component;
-		// 		routesMap[r.component] = r;
-		// 		if(r.children){
-		// 			Util.flatRoutes(r, routesMap);
-		// 		}
-		// 	}
-		// }
-
-		// static composePrefix(routesMap){
-		// 	Object.keys(routesMap)
-		// 		.map(routeName => {
-		// 			let route = routesMap[routeName]
-		// 			const recurPrefix = n => {
-		// 				if(!n){
-		// 					return '';
-		// 				}
-		// 				if(n.parent){
-		// 					let parentRoute = routesMap[n.parent];
-		// 					if(parentRoute && !parentRoute.pathDone){
-		// 						n.path = recurPrefix(parentRoute) + n.path;
-		// 						n.pathDone = true;
-		// 					}else{
-		// 						n.path = parentRoute && parentRoute.path || '' + n.path;
-		// 					}
-		// 					return n.path;
-		// 				}
-		// 				return n.path;
-		// 			}
-		// 			return recurPrefix(route);
-		// 		})
-		// }
 
     static compareUrl(u1, u2){
         var r = [];

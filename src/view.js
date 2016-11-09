@@ -32,18 +32,6 @@ const rendererCreator = router => {
                 }
             })
             return renderer.leaveUpstream(tag.parent);
-            // if(!tag || !tag.parent || !tag.parent.tags){
-            //     return;
-            // }
-            // Object.keys(tag.parent.tags)
-            // .map(k => tag.parent.tags[k])
-            // .filter(t => t != tag)
-            // .forEach(t => {
-            //     if(t && t.opts.show){
-            //         renderer.leaveDownstream(t, tag)
-            //     }
-            // }); 
-            // return renderer.leaveUpstream(tag.parent);
         },
 
         leaveDownstream: (tag, parent) => {
@@ -65,25 +53,6 @@ const rendererCreator = router => {
                     return renderer.leaveDownstream(t, tag);
                 }
             })
-            // if(!tag){
-            //     return;
-            // }
-            // renderer.leave(tag, parent);
-            // if(tag.tags && Object.keys(tag.tags).length){
-            //     Object.keys(tag.tags).map((tagName, i) => {
-            //         let tmp = tag.tags[tagName];
-            //         let t = null;
-            //         if(Array.isArray(tmp)){
-            //             t = tmp[i];
-            //         }else{
-            //             t = tmp;
-            //         }
-            //         if(t && t.opts.show && !t.cache){
-            //             renderer.leave(t, tag);
-            //             return renderer.leaveDownstream(t, tag)
-            //         }
-            //     })
-            // }
         },
 
         leave: (tag, to, callback) => {
@@ -122,7 +91,7 @@ const rendererCreator = router => {
     });
 
     router.on('history-success', (from, to) => {
-        to && to.tag && to.tag.trigger('entered');
+        // to && to.tag && to.tag.trigger('entered');
     });
 
     return　renderer;

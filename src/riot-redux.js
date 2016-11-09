@@ -181,8 +181,8 @@ export const provide = store => {
                     });
                     // if the tag is on show or the tag to be show --> update it.
                     if(isShow(c, currState) || isPresent(c, currState)){
-                        if(isPresent(c, currState)){
-                            c.ensureToUpdate = true;
+                        if (isPresent(c, currState) && currState.lastAction.payload === c) {
+                            c.ensureToUpdate = currState.lastAction.type;
                         }
                         toUpateSet.add(c);
                     }
@@ -242,7 +242,14 @@ const compareAndUpate = arr => {
     let refinedComponents = distinct(Array.from(flat(arr)), c => getTagName(c));
     refinedComponents.map(c => {
         (isShow(c) || c.ensureToUpdate) && setTimeout(() => {
-            delete c['ensureToUpdate'];
+            if(c.ensureToUpdate){
+                if(c.ensureToUpdate === '$enter'){
+                    c.trigger('entered');
+                }else{
+                    c.trigger('leaved');
+                }
+                delete c['ensureToUpdate'];
+            }
             c.update();
         }, 0);
     })
