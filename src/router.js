@@ -1,9 +1,8 @@
 "use strict";
 import riot from 'riot';
-import viewCreator from './view';
 
 /**
- * riot router version 3.
+ * riot router version 4.
  * updates v2:
  *  1. change route rule, delete underline when path is param.
  *  2. routes change data structure from map to array. 
@@ -594,8 +593,6 @@ class Util {
 }
 
 var hub = new Hub(riot.observable());
-
-hub.view = viewCreator(hub);
 
 export default { 
 	hub: hub,

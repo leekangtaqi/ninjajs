@@ -92,57 +92,6 @@ const throttle = (fn, wait) => {
     }, wait)
 }
 
-const filter = {
-    ago: d => {
-        if(typeof d === 'string'){
-            d = new Date(d);
-        }
-        let distinct = parseFloat((d.getTime() - new Date().getTime()), 10);
-        let isBefore = distinct < 0;
-        let absDistinct = Math.abs(distinct);
-        //----ningning----
-        let minutesStep = Math.ceil(absDistinct/(60*1000));
-        if(minutesStep < 60){
-            return (isBefore ? minutesStep + '分钟前' : minutesStep + '分钟内');
-        }
-        let hourStep = Math.ceil(absDistinct/(3600*1000));
-        if(hourStep < 24){
-            return (isBefore ? hourStep + '小时前' : hourStep + '小时内');
-        }
-        //--------------
-        let dayStep = Math.ceil(absDistinct/(24*3600*1000));
-        if(dayStep < 30){
-            return (isBefore ? dayStep + '天前' : dayStep + '天内');
-        }
-        let monthStep = Math.ceil(dayStep / 30);
-        if(monthStep < 12){
-            return (isBefore ? monthStep + '个月前' : monthStep + '个月内');
-        }
-        let yearStep = Math.ceil(monthStep / 12);
-        return (isBefore ? yearStep + '年前' : yearStep + '年内');
-    },
-    currency: (s, prefix = true) => {
-        return (prefix ? '￥' : '') + (s.toFixed(2) || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,'); 
-    },
-    date: function(date, fmt){
-        var o = {
-            "M+" : date.getMonth()+1,
-            "d+" : date.getDate(),
-            "h+" : date.getHours(),
-            "m+" : date.getMinutes(),
-            "s+" : date.getSeconds(),
-            "q+" : Math.floor((date.getMonth()+3)/3),
-            "S"  : date.getMilliseconds()
-        };
-        if(/(y+)/.test(fmt))
-            fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
-        for(var k in o)
-            if(new RegExp("("+ k +")").test(fmt))
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
-        return fmt;
-    }
-}
-
 const deepEqual = (x, y) => {
   return (x && y && typeof x === 'object' && typeof y === 'object') ?
     (Object.keys(x).length === Object.keys(y).length) &&
@@ -155,8 +104,7 @@ export default {
     values, 
     mixin, 
     querystring, 
-    throttle, 
-    filter, 
+    throttle,
     clone, 
     deepEqual,
     omit,
