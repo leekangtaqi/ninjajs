@@ -11,7 +11,7 @@ router.hub.on('history-pending', (from, to) => {
 		}
 });
 
-router.hub.on('history-resolve', (from, to, ctx, hints, next) => {
+router.hub.on('history-resolve', (from, to, ctx, hints, index, next) => {
 		let fromTag = from && from.tag || null;
 		let toTag = to && to.tag || null;
 		hub.view.enter(toTag, fromTag);

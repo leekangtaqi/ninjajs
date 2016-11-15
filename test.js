@@ -11,4 +11,3 @@ if (env === 'development' || env === 'test') {
 
 // Export the application
 var t = require('./dist').Ninjia;
-console.warn(t);

@@ -239,7 +239,7 @@ const iterator = (index, during) => {
 }
 
 const compareAndUpate = arr => {
-    let refinedComponents = distinct(Array.from(flat(arr)), c => getTagName(c));
+    let refinedComponents = distinct(Array.from(flat(arr)), c => (c.$routePath || getTagName(c)));
     refinedComponents.map(c => {
         (isShow(c) || c.ensureToUpdate) && setTimeout(() => {
             if(c.ensureToUpdate){
