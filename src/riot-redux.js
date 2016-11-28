@@ -241,7 +241,7 @@ const iterator = (index, during) => {
 const compareAndUpate = arr => {
     let refinedComponents = distinct(Array.from(flat(arr)), c => (c.$routePath || getTagName(c)));
     refinedComponents.map(c => {
-        (isShow(c) || c.ensureToUpdate) && setTimeout(() => {
+        (c.isMounted && (isShow(c) || c.ensureToUpdate)) && setTimeout(() => {
             if(c.ensureToUpdate){
                 if(c.ensureToUpdate === '$enter'){
                     c.trigger('entered');
