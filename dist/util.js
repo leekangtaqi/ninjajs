@@ -123,57 +123,6 @@ var throttle = function throttle(fn, wait) {
     }, wait);
 };
 
-var filter = {
-    ago: function ago(d) {
-        if (typeof d === 'string') {
-            d = new Date(d);
-        }
-        var distinct = parseFloat(d.getTime() - new Date().getTime(), 10);
-        var isBefore = distinct < 0;
-        var absDistinct = Math.abs(distinct);
-        //----ningning----
-        var minutesStep = Math.ceil(absDistinct / (60 * 1000));
-        if (minutesStep < 60) {
-            return isBefore ? minutesStep + '分钟前' : minutesStep + '分钟内';
-        }
-        var hourStep = Math.ceil(absDistinct / (3600 * 1000));
-        if (hourStep < 24) {
-            return isBefore ? hourStep + '小时前' : hourStep + '小时内';
-        }
-        //--------------
-        var dayStep = Math.ceil(absDistinct / (24 * 3600 * 1000));
-        if (dayStep < 30) {
-            return isBefore ? dayStep + '天前' : dayStep + '天内';
-        }
-        var monthStep = Math.ceil(dayStep / 30);
-        if (monthStep < 12) {
-            return isBefore ? monthStep + '个月前' : monthStep + '个月内';
-        }
-        var yearStep = Math.ceil(monthStep / 12);
-        return isBefore ? yearStep + '年前' : yearStep + '年内';
-    },
-    currency: function currency(s) {
-        var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-        return (prefix ? '￥' : '') + (s.toFixed(2) || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
-    },
-    date: function date(_date, fmt) {
-        var o = {
-            "M+": _date.getMonth() + 1,
-            "d+": _date.getDate(),
-            "h+": _date.getHours(),
-            "m+": _date.getMinutes(),
-            "s+": _date.getSeconds(),
-            "q+": Math.floor((_date.getMonth() + 3) / 3),
-            "S": _date.getMilliseconds()
-        };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (_date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-        }return fmt;
-    }
-};
-
 var deepEqual = function deepEqual(x, y) {
     return x && y && (typeof x === "undefined" ? "undefined" : _typeof(x)) === 'object' && (typeof y === "undefined" ? "undefined" : _typeof(y)) === 'object' ? Object.keys(x).length === Object.keys(y).length && Object.keys(x).reduce(function (isEqual, key) {
         return isEqual && deepEqual(x[key], y[key]);
@@ -185,7 +134,6 @@ exports.default = {
     mixin: mixin,
     querystring: querystring,
     throttle: throttle,
-    filter: filter,
     clone: clone,
     deepEqual: deepEqual,
     omit: omit,

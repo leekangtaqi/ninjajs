@@ -222,8 +222,8 @@ var provide = exports.provide = function provide(store) {
                     });
                     // if the tag is on show or the tag to be show --> update it.
                     if (isShow(c, currState) || isPresent(c, currState)) {
-                        if (isPresent(c, currState)) {
-                            c.ensureToUpdate = true;
+                        if (isPresent(c, currState) && currState.lastAction.payload === c) {
+                            c.ensureToUpdate = currState.lastAction.type;
                         }
                         toUpateSet.add(c);
                     }
@@ -247,8 +247,9 @@ var isShow = function isShow(c, state) {
     return c.opts.show || c.opts.$show;
 };
 var isPresent = function isPresent(c, state) {
-    return (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && state.lastAction.payload === c;
+    return state.lastAction.type === '$enter' || state.lastAction.type === '$leave';
 };
+// const isPresent = (c, state) => (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && (state.lastAction.payload === c);
 var getTagName = function getTagName(c) {
     return c.opts && c.opts.riotTag || c.root.localName;
 };
@@ -288,11 +289,18 @@ var iterator = function iterator(index, during) {
 
 var compareAndUpate = function compareAndUpate(arr) {
     var refinedComponents = distinct(Array.from(flat(arr)), function (c) {
-        return getTagName(c);
+        return c.$routePath || getTagName(c);
     });
     refinedComponents.map(function (c) {
-        (isShow(c) || c.ensureToUpdate) && setTimeout(function () {
-            delete c['ensureToUpdate'];
+        c.isMounted && (isShow(c) || c.ensureToUpdate) && setTimeout(function () {
+            if (c.ensureToUpdate) {
+                if (c.ensureToUpdate === '$enter') {
+                    c.trigger('entered');
+                } else {
+                    c.trigger('leaved');
+                }
+                delete c['ensureToUpdate'];
+            }
             c.update();
         }, 0);
     });

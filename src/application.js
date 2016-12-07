@@ -1,4 +1,4 @@
-import riot from 'riot'; 
+import * as riot from 'riot'; 
 import { configureStore } from './store';
 import riotRouterRedux from './riot-router-redux';
 import router from './router';

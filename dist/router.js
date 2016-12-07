@@ -12,18 +12,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _riot = require('riot');
 
-var _riot2 = _interopRequireDefault(_riot);
+var riot = _interopRequireWildcard(_riot);
 
-var _view = require('./view');
-
-var _view2 = _interopRequireDefault(_view);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * riot router version 3.
+ * riot router version 4.
  * updates v2:
  *  1. change route rule, delete underline when path is param.
  *  2. routes change data structure from map to array. 
@@ -56,11 +52,11 @@ var Hub = function () {
         key: 'startup',
         value: function startup() {
             this._parseRoute();
-            _riot2.default.route.base('/');
-            _riot2.default.route(this.doRoute.bind(this));
+            riot.route.base('/');
+            riot.route(this.doRoute.bind(this));
             Util.nextTick(function () {
-                _riot2.default.route.start();
-                _riot2.default.route.exec();
+                riot.route.start();
+                riot.route.exec();
             });
             return this;
         }
@@ -143,7 +139,7 @@ var Hub = function () {
     }, {
         key: '_parseRoute',
         value: function _parseRoute() {
-            _riot2.default.route.parser(this.parse.bind(this));
+            riot.route.parser(this.parse.bind(this));
             return this;
         }
 
@@ -157,15 +153,17 @@ var Hub = function () {
     }, {
         key: 'routeTo',
         value: function routeTo(route, ctx, hint) {
+            var redirect = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
             var _this = this;
 
-            var redirect = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-            var cb = arguments[4];
+            var level = arguments[4];
+            var cb = arguments[5];
 
             this.busy = false;
             this.trigger('busy-resolve');
             if (redirect) {
-                return _riot2.default.route(route.path);
+                return riot.route(route.path);
             }
 
             if (!route.tag.opts['show'] && !route.tag.opts['$show'] && Util.completePart(route.path) === this.location) {
@@ -175,7 +173,7 @@ var Hub = function () {
             var $location = hint;
             this.trigger('state-change', { $state: $state, $location: $location, ctx: ctx });
             if (route.redirectTo) {
-                _riot2.default.route(route.redirectTo);
+                riot.route(route.redirectTo);
                 return true;
             }
             var addons = {
@@ -184,7 +182,8 @@ var Hub = function () {
                 route: route,
                 tag: route.tag,
                 $state: $state,
-                $location: $location
+                $location: $location,
+                index: level
             };
             if (route.resolve) {
                 return route.resolve.apply(route.tag, [function (data) {
@@ -283,7 +282,7 @@ var Hub = function () {
             }
             if (!target && level === hints.length) {
                 if (node.defaultRoute) {
-                    this.routeTo(node.defaultRoute, ctx, hint, true);
+                    this.routeTo(node.defaultRoute, ctx, hint, true, level);
                     return { ctx: ctx, components: components.concat(target) };
                 }
                 console.info('404');
@@ -299,18 +298,18 @@ var Hub = function () {
                     var done = function done() {
                         var _this3 = this;
 
-                        var outletEl = outlet.root.querySelector('div[data-tag-name="' + target.component + '"]');
-                        if (!target.tag) {
-                            var tag = _riot2.default.mount(outletEl, '' + target.component)[0];
-                            tag.$routePath = target.path;
+                        if (!target.tag || !target.tag.isMounted) {
+                            var outletEl = outlet.root.querySelector('div[data-tag-name="' + target.component + '"]');
+                            tag = riot.mount(outletEl, '' + target.component)[0];
                             if (tag) {
+                                tag.$routePath = target.path;
                                 outlet.parent.tags[tag.opts.riotTag] = tag;
                                 tag.parent = outlet.parent;
                                 target.tag = tag;
                             }
                         }
                         if (target.tag) {
-                            return this.routeTo(target, ctx, hint, false, function () {
+                            return this.routeTo(target, ctx, hint, false, level, function () {
                                 if (hints[level + 1]) {
                                     return _this3.recurMatch(ctx, target.tag, level + 1, routes, components.concat(target));
                                 }
@@ -369,7 +368,8 @@ var Hub = function () {
                 route = _ref2.route,
                 tag = _ref2.tag,
                 $state = _ref2.$state,
-                $location = _ref2.$location;
+                $location = _ref2.$location,
+                index = _ref2.index;
 
             var me = this;
             if (ctx && data) {
@@ -380,7 +380,7 @@ var Hub = function () {
                 cancelAnimationFrame(RAFId);
                 RAFId = undefined;
                 me.trigger('history-pending', me.prev, $state, $location, ctx, me.executeMiddlewares(tag, tag.$mws, ctx, function () {
-                    me.routeSuccess(data, ctx, { hints: hints, req: req, route: route, tag: tag, $state: $state, $location: $location }, cb);
+                    me.routeSuccess(data, ctx, { hints: hints, req: req, route: route, tag: tag, $state: $state, $location: $location, index: index }, cb);
                 }));
             });
         }
@@ -392,7 +392,8 @@ var Hub = function () {
                 route = _ref3.route,
                 tag = _ref3.tag,
                 $state = _ref3.$state,
-                $location = _ref3.$location;
+                $location = _ref3.$location,
+                index = _ref3.index;
 
             var me = this;
             var from = me.getMetaDataFromRouteMap(me.location).route;
@@ -400,7 +401,7 @@ var Hub = function () {
             var RAFId = requestAnimationFrame(function () {
                 cancelAnimationFrame(RAFId);
                 RAFId = undefined;
-                me.trigger('history-resolve', me.prev, to, ctx, hints, function () {
+                me.trigger('history-resolve', me.prev, to, ctx, hints, index, function () {
                     me.trigger('history-success', from, to);
                     me.location = $location;
                     me.prev = route;
@@ -424,7 +425,7 @@ var Hub = function () {
             if (!title && this.title) {
                 title = this.title();
             }
-            _riot2.default.route(url, title, replace);
+            riot.route(url, title, replace);
             return this;
         }
     }, {
@@ -581,21 +582,8 @@ var Hub = function () {
         },
         set: function set(val) {
             this._routes = val;
-            // var routesMap = {};
-            // Util.flatRoutes(val, routesMap);
-            // Util.composePrefix(routesMap);
-            // this.routesMap = routesMap;
             Util.flatAndComposePrefix(this.routes, this.refinedRoutes);
         }
-
-        // get routesMap(){
-        // 	return this._routesMap;
-        // }
-
-        // set routesMap(val){
-        // 	this._routesMap = val;
-        // }
-
     }, {
         key: 'defaultRoute',
         get: function get() {
@@ -673,43 +661,6 @@ var Util = function () {
             }
             return res;
         }
-
-        // static flatRoutes(route, routesMap){
-        // 	let i = 0, len = route.children.length; 
-        // 	for(; i<len; i++){
-        // 		let r = route.children[i];
-        // 		r.parent = route.component;
-        // 		routesMap[r.component] = r;
-        // 		if(r.children){
-        // 			Util.flatRoutes(r, routesMap);
-        // 		}
-        // 	}
-        // }
-
-        // static composePrefix(routesMap){
-        // 	Object.keys(routesMap)
-        // 		.map(routeName => {
-        // 			let route = routesMap[routeName]
-        // 			const recurPrefix = n => {
-        // 				if(!n){
-        // 					return '';
-        // 				}
-        // 				if(n.parent){
-        // 					let parentRoute = routesMap[n.parent];
-        // 					if(parentRoute && !parentRoute.pathDone){
-        // 						n.path = recurPrefix(parentRoute) + n.path;
-        // 						n.pathDone = true;
-        // 					}else{
-        // 						n.path = parentRoute && parentRoute.path || '' + n.path;
-        // 					}
-        // 					return n.path;
-        // 				}
-        // 				return n.path;
-        // 			}
-        // 			return recurPrefix(route);
-        // 		})
-        // }
-
     }, {
         key: 'compareUrl',
         value: function compareUrl(u1, u2) {
@@ -781,9 +732,7 @@ Util.flatAndComposePrefix = function (node, res) {
     }
 };
 
-var hub = new Hub(_riot2.default.observable());
-
-hub.view = (0, _view2.default)(hub);
+var hub = new Hub(riot.observable());
 
 exports.default = {
     hub: hub,

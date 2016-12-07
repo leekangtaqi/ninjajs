@@ -9,7 +9,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _riot = require('riot');
 
-var _riot2 = _interopRequireDefault(_riot);
+var riot = _interopRequireWildcard(_riot);
 
 var _store = require('./store');
 
@@ -24,6 +24,8 @@ var _router3 = _interopRequireDefault(_router2);
 var _riotRedux = require('./riot-redux');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -45,7 +47,7 @@ var Ninjia = function () {
 		if (!container) {
 			throw new Error('a container expected.');
 		}
-		this.framework = _riot2.default;
+		this.framework = riot;
 		this.container = container;
 		this.reducer = reducer;
 		this.middlewares = middlewares;
@@ -58,7 +60,7 @@ var Ninjia = function () {
 			hub: {},
 			tags: {}
 		};
-		this.emitter = _riot2.default.observable({});
+		this.emitter = riot.observable({});
 		container.widgets = this._widgets = {};
 	}
 
@@ -105,7 +107,7 @@ var Ninjia = function () {
 			var name = _ref2.name,
 			    methods = _ref2.methods;
 
-			var component = _riot2.default.mount(name)[0];
+			var component = riot.mount(name)[0];
 			this._context.tags[name] = component;
 			var upperName = name.replace(/(\w)/, function (v) {
 				return v.toUpperCase();

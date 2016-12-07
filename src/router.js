@@ -1,5 +1,5 @@
 "use strict";
-import riot from 'riot';
+import * as riot from 'riot';
 
 /**
  * riot router version 4.
