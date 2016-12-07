@@ -3,7 +3,8 @@ import Application from './application';
 import { provide, connect } from './riot-redux';
 import viewCreator from './view';
 
-hub.view = viewCreator(router.hub);
+
+router.hub.view = viewCreator(router.hub);
 
 router.hub.on('history-pending', (from, to) => {
 		if(from && from.tag){

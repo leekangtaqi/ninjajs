@@ -21,7 +21,7 @@ var _view2 = _interopRequireDefault(_view);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-hub.view = (0, _view2.default)(_router2.default.hub);
+_router2.default.hub.view = (0, _view2.default)(_router2.default.hub);
 
 _router2.default.hub.on('history-pending', function (from, to) {
 		if (from && from.tag) {
