@@ -14,6 +14,12 @@ var _riot = require('riot');
 
 var riot = _interopRequireWildcard(_riot);
 
+var _riotRoute = require('riot-route');
+
+var _riotRoute2 = _interopRequireDefault(_riotRoute);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52,11 +58,11 @@ var Hub = function () {
         key: 'startup',
         value: function startup() {
             this._parseRoute();
-            riot.route.base('/');
-            riot.route(this.doRoute.bind(this));
+            _riotRoute2.default.base('/');
+            (0, _riotRoute2.default)(this.doRoute.bind(this));
             Util.nextTick(function () {
-                riot.route.start();
-                riot.route.exec();
+                _riotRoute2.default.start();
+                _riotRoute2.default.exec();
             });
             return this;
         }
@@ -139,7 +145,7 @@ var Hub = function () {
     }, {
         key: '_parseRoute',
         value: function _parseRoute() {
-            riot.route.parser(this.parse.bind(this));
+            _riotRoute2.default.parser(this.parse.bind(this));
             return this;
         }
 
@@ -163,7 +169,7 @@ var Hub = function () {
             this.busy = false;
             this.trigger('busy-resolve');
             if (redirect) {
-                return riot.route(route.path);
+                return route(route.path);
             }
 
             if (!route.tag.opts['show'] && !route.tag.opts['$show'] && Util.completePart(route.path) === this.location) {
@@ -173,7 +179,7 @@ var Hub = function () {
             var $location = hint;
             this.trigger('state-change', { $state: $state, $location: $location, ctx: ctx });
             if (route.redirectTo) {
-                riot.route(route.redirectTo);
+                route(route.redirectTo);
                 return true;
             }
             var addons = {
@@ -266,8 +272,8 @@ var Hub = function () {
 
             for (var i = 0, len = targetRoutes.length; i < len; i++) {
                 // for(let route of targetRoutes){
-                var route = targetRoutes[i];
-                var matchRes = this.match(Util.completePart(route.path), Util.completePart(hint));
+                var _route = targetRoutes[i];
+                var matchRes = this.match(Util.completePart(_route.path), Util.completePart(hint));
                 if (matchRes) {
                     //assign object to context
                     if (!ctx.req.params) {
@@ -275,8 +281,8 @@ var Hub = function () {
                     }
                     Object.assign(ctx.req.params, matchRes);
                     !ctx.req.body && (ctx.req.body = {});
-                    Object.assign(ctx.req.body, Util.omit(route, "resolve", "redirectTo", "tag", "path", "name") || {});
-                    target = route;
+                    Object.assign(ctx.req.body, Util.omit(_route, "resolve", "redirectTo", "tag", "path", "name") || {});
+                    target = _route;
                     break;
                 }
             }
@@ -425,7 +431,7 @@ var Hub = function () {
             if (!title && this.title) {
                 title = this.title();
             }
-            riot.route(url, title, replace);
+            (0, _riotRoute2.default)(url, title, replace);
             return this;
         }
     }, {
@@ -445,7 +451,7 @@ var Hub = function () {
             var keys = Object.keys(this.routes);
             for (var i = 0, len = keys.length; i < len; i++) {
                 var k = keys[i];
-                var route = this.routes[k];
+                var _route2 = this.routes[k];
                 if (Util.toPattern(k) === Util.toPattern(routeKey)) {
                     var paramKeys = (Util.extractParams(k) || []).map(function (i) {
                         return i.slice(2);
@@ -454,7 +460,7 @@ var Hub = function () {
                         return i.slice(1);
                     });
                     return {
-                        route: route,
+                        route: _route2,
                         $state: k,
                         $location: routeKey,
                         params: Util.composeObject(paramKeys, paramValues)
@@ -723,12 +729,12 @@ Util.flatAndComposePrefix = function (node, res) {
         return;
     }
     for (var i = 0, len = arr.length; i < len; i++) {
-        var route = arr[i];
-        route.path = (node.path || '') + route.path;
-        route.parent = node.id || '';
-        route.id = Util.genId(8);
-        res.push(route);
-        Util.flatAndComposePrefix(route, res);
+        var _route3 = arr[i];
+        _route3.path = (node.path || '') + _route3.path;
+        _route3.parent = node.id || '';
+        _route3.id = Util.genId(8);
+        res.push(_route3);
+        Util.flatAndComposePrefix(_route3, res);
     }
 };
 

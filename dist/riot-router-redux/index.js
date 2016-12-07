@@ -3,6 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _riotRoute = require('riot-route');
+
+var _riotRoute2 = _interopRequireDefault(_riotRoute);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function routerMiddlewareCreator(historyMode) {
     return function (store) {
         return function (next) {
@@ -24,7 +31,7 @@ function syncHistoryWithStore(hub, store) {
         //     return;
         // }
         query[param] = value;
-        riot.route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
+        route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
     });
     hub.off('state-change').on('state-change', function (route) {
         store.dispatch({
