@@ -305,8 +305,8 @@ var Hub = function () {
                         var _this3 = this;
 
                         if (!target.tag || !target.tag.isMounted) {
-                            var outletEl = outlet.root.querySelector('div[data-tag-name="' + target.component + '"]');
-                            tag = riot.mount(outletEl, '' + target.component)[0];
+                            var outletEl = outlet.root.querySelector('div[data-tag-name="' + target.component.name + '"]');
+                            var tag = new target.component(outletEl).mount();
                             if (tag) {
                                 tag.$routePath = target.path;
                                 outlet.parent.tags[tag.opts.riotTag] = tag;

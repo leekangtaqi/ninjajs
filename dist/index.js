@@ -21,15 +21,18 @@ var _view2 = _interopRequireDefault(_view);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_router2.default.hub.view = (0, _view2.default)(_router2.default.hub);
+var hub = _router2.default.hub;
 
-_router2.default.hub.on('history-pending', function (from, to) {
+
+hub.view = (0, _view2.default)(hub);
+
+hub.on('history-pending', function (from, to) {
 		if (from && from.tag) {
 				from.tag.trigger('before-leave');
 		}
 });
 
-_router2.default.hub.on('history-resolve', function (from, to, ctx, hints, index, next) {
+hub.on('history-resolve', function (from, to, ctx, hints, index, next) {
 		var fromTag = from && from.tag || null;
 		var toTag = to && to.tag || null;
 		hub.view.enter(toTag, fromTag);
@@ -37,7 +40,7 @@ _router2.default.hub.on('history-resolve', function (from, to, ctx, hints, index
 		next();
 });
 
-_router2.default.hub.on('history-success', function (from, to) {
+hub.on('history-success', function (from, to) {
 		// to && to.tag && to.tag.trigger('entered');
 });
 

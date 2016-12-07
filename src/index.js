@@ -3,16 +3,17 @@ import Application from './application';
 import { provide, connect } from './riot-redux';
 import viewCreator from './view';
 
+let { hub } = router;
 
-router.hub.view = viewCreator(router.hub);
+hub.view = viewCreator(hub);
 
-router.hub.on('history-pending', (from, to) => {
+hub.on('history-pending', (from, to) => {
 		if(from && from.tag){
 				from.tag.trigger('before-leave');
 		}
 });
 
-router.hub.on('history-resolve', (from, to, ctx, hints, index, next) => {
+hub.on('history-resolve', (from, to, ctx, hints, index, next) => {
 		let fromTag = from && from.tag || null;
 		let toTag = to && to.tag || null;
 		hub.view.enter(toTag, fromTag);
@@ -20,7 +21,7 @@ router.hub.on('history-resolve', (from, to, ctx, hints, index, next) => {
 		next();
 });
 
-router.hub.on('history-success', (from, to) => {
+hub.on('history-success', (from, to) => {
 		// to && to.tag && to.tag.trigger('entered');
 });
 

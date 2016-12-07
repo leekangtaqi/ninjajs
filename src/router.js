@@ -246,8 +246,8 @@ class Hub {
             }
             function done(){
                 if(!target.tag || !target.tag.isMounted){ 
-                    let outletEl = outlet.root.querySelector(`div[data-tag-name="${target.component}"]`)
-                    tag = riot.mount(outletEl, `${target.component}`)[0];
+                    let outletEl = outlet.root.querySelector(`div[data-tag-name="${target.component.name}"]`);
+                    let tag = new target.component(outletEl).mount();
                     if(tag){
                         tag.$routePath = target.path;
                         outlet.parent.tags[tag.opts.riotTag] = tag;
