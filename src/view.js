@@ -1,6 +1,6 @@
 class View {
     setHandler(callback){
-        this.handler = cb;
+        this.handler = callback;
     }
 
     enter(tag, from , callback){

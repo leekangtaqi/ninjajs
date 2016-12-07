@@ -16,7 +16,7 @@ var View = function () {
     _createClass(View, [{
         key: 'setHandler',
         value: function setHandler(callback) {
-            this.handler = cb;
+            this.handler = callback;
         }
     }, {
         key: 'enter',
