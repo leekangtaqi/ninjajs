@@ -92,8 +92,8 @@ var View = function () {
             if (tag.opts.show || tag.opts.$show) {
                 tag.opts.show = false;
                 tag.opts.hidden = true;
-                if (renderer.handler) {
-                    return renderer.handler('leave', tag);
+                if (this.handler) {
+                    return this.handler('leave', tag);
                 }
                 tag.update();
             }
