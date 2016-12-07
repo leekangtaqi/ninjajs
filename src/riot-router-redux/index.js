@@ -1,3 +1,5 @@
+import route from 'riot-route';
+
 function routerMiddlewareCreator(historyMode){
     return store => next => action => {
         if(action.type === 'route'){
@@ -13,7 +15,7 @@ function syncHistoryWithStore(hub, store){
         //     return;
         // }
         query[param] = value;
-        riot.route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
+        route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
     });
     hub.off('state-change').on('state-change', route => {
         store.dispatch({

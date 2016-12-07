@@ -1,5 +1,6 @@
 "use strict";
 import * as riot from 'riot';
+import route from 'riot-route';
 
 /**
  * riot router version 4.
@@ -31,11 +32,11 @@ class Hub {
 
     startup(){
         this._parseRoute();
-        riot.route.base('/');
-        riot.route(this.doRoute.bind(this));
+        route.base('/');
+        route(this.doRoute.bind(this));
         Util.nextTick(() => {
-            riot.route.start();
-            riot.route.exec();
+            route.start();
+            route.exec();
         });
         return this;
     }
@@ -101,7 +102,7 @@ class Hub {
     } 
 
     _parseRoute(){
-        riot.route.parser(this.parse.bind(this));
+        route.parser(this.parse.bind(this));
         return this;     
     }
 
@@ -115,7 +116,7 @@ class Hub {
         this.busy = false;
         this.trigger('busy-resolve');
         if(redirect){
-            return riot.route(route.path);
+            return route(route.path);
         }
         
         if((!route.tag.opts['show'] && !route.tag.opts['$show']) 
@@ -126,7 +127,7 @@ class Hub {
         let $location = hint;
         this.trigger('state-change', {$state, $location, ctx});
         if(route.redirectTo){
-            riot.route(route.redirectTo);
+            route(route.redirectTo);
             return true;
         }
         let addons = {
@@ -349,7 +350,7 @@ class Hub {
         if(!title && this.title){
             title = this.title();
         }
-        riot.route(url, title, replace);
+        route(url, title, replace);
         return this; 
     }
 
