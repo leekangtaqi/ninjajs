@@ -2,6 +2,7 @@ import router from './router';
 import Application from './application';
 import { provide, connect } from './riot-redux';
 import viewCreator from './view';
+import { view } from './riot-router-redux';
 
 let { hub } = router;
 
@@ -25,4 +26,4 @@ hub.on('history-success', (from, to) => {
 		// to && to.tag && to.tag.trigger('entered');
 });
 
-export { router, Application as Ninjia, provide, connect }
+export { router, Application as Ninjia, provide, connect, view }

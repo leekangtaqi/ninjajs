@@ -1,3 +1,5 @@
+import { bindActionCreators } from 'redux';
+import * as riot from 'riot';
 /**
  *  Entry of application.
  */
@@ -124,26 +126,169 @@ if (!Array.from) {
  */
 let containers = new TagContainerProxy();
 
+const defaultMapStateToOpts = state => ({});
+const defaultMapDispatchToOpts = dispatch => ({ dispatch });
+const defaultMergeOpts = (stateOpts, dispatchOpts, parentOpts) => ({
+    ...parentOpts,
+    ...stateOpts,
+    ...dispatchOpts
+});
+
+const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+
+let errorObject = { value: null };
+function tryCatch(fn , ctx) {
+    try {
+        return fn.apply(ctx);
+    } catch (e) {
+        errorObject.value = e;
+        return errorObject;
+    }
+};
+
+// Helps track hot reloading.
+let nextVersion = 0;
+
+// Helpers
+function isPlainObject(o) {
+    return typeof o === 'object' && !Array.isArray(o)
+}
+function invariant(o, msg) {
+    if(typeof o === 'undefined'){
+        throw new Error(msg);
+    }
+}
+function warning(message) {
+    if(typeof console !== 'undefined' && typeof console.error === 'function'){
+        console.error(message);
+    }
+    try {
+        throw new Error(message);
+    } catch (e) {}
+}
+function wrapActionCreators(actionCreators) {
+    return dispatch => bindActionCreators(actionCreators, dispatch);
+}
+
+/**
+ * A HOC for connect the tag to redux store. (react-redux like)
+ */
+export const connect = (mapStateToOpts, mapDispatchToOpts, mergeOpts, options) => {
+    const shouldSubscribe = Boolean(mapStateToOpts)
+    const mapState = mapStateToOpts || defaultMapStateToOpts;
+
+    let mapDispatch = null;
+    if(typeof mapDispatchToOpts === 'function'){
+        mapDispatch = mapDispatchToOpts;
+    } else if (!mapDispatchToOpts) {
+        mapDispatch = defaultMapDispatchToOpts;
+    } else {
+        mapDispatch = wrapActionCreators(mapDispatchToOpts);
+    }
+
+    const finalMergeOpts = mergeOpts || defaultMergeOpts;
+    const { pure = true, withRef = false } = options;
+    const checkMergedEquals = pure && finalMergeProps !== defaultMergeProps;
+
+    const version = nextVersion++;
+
+    return function wrapWithConnect(WrappedComponent){
+        const connectDisplayName = `Connect(${getDisplayName(WrappedComponent)})`;
+
+        function checkStateShape(opts, methodName){
+            if (!isPlainObject(opts)) {
+                warning(
+                    `${methodName}() in ${connectDisplayName} must return a plain object. ` +
+                    `Instead received ${opts}.`
+                )
+            }
+        }
+
+        function computeMergedOpts(stateOpts, dispatchOpts, parentOpts) {
+            const mergedOpts = finalMergeOpts(stateOpts, dispatchOpts, parentOpts)
+            if (process.env.NODE_ENV !== 'production') {
+                checkStateShape(mergedOpts, 'mergeOpts');
+            } 
+            return mergedOpts;
+        }
+
+        class Connect extends riot.Tag{
+            onCreate(opts) {
+                this.version = version;
+                this.store = opts.store || (provider || recurFindProvider(this)).opts.store;
+
+                const storeState = this.store.getState();
+
+                invariant(this.store,
+                    `Could not find "store" in either the context or ` +
+                    `opts of "${connectDisplayName}". ` +
+                    `Either wrap the root component in a Provider, ` +
+                    `or explicitly pass "store" as a opt to "${connectDisplayName}".`
+                )
+
+                this.state = { storeState }
+                this.clearCache();
+
+
+
+                this.on('unmount', () => {
+                    containers.del(tag);
+                })
+                //collect tag to set.
+                this.opts.mapStateToOpts = mapStateToOpts;
+                this.opts.mapDispatchToOpts = mapDispatchToOpts;
+                containers.add(tag);
+
+            }
+
+            computeStateOpts(store, opts) {
+                if (!this.finalMapStateToOpts) {
+                    return this.configureFinalMapState(store, opts)
+                }
+
+                const state = store.getState()
+                const stateOpts = this.doStateOptsDependOnOwnProps ?
+                this.finalMapStateToOpts(state, props) :
+                this.finalMapStateToOpts(state)
+
+                if (process.env.NODE_ENV !== 'production') {
+                    checkStateShape(stateOpts, 'mapStateToOpts')
+                }
+                return stateOpts
+            }
+
+            
+
+            render () {
+
+            }
+        }
+
+        Connect.displayName = connectDisplayName;
+        Connect.WrappedComponent = WrappedComponent;
+    }
+}
+
 /**
  *  A mixin for connect the tag to redux store.(react-redux like)
  */
-export const connect = (mapStateToOpts, mapDispatchToOpts) => tag => {
-    if(!tag){
-        throw new Error(`riot redux connector expected a tag instance.`);
-    }
-    tag.on('unmount', () => {
-        containers.del(tag);
-    })
-    //collect tag to set.
-    tag.opts.mapStateToOpts = mapStateToOpts;
-    tag.opts.mapDispatchToOpts = mapDispatchToOpts;
-    containers.add(tag);
+// export const connect = (mapStateToOpts, mapDispatchToOpts) => tag => {
+//     if(!tag){
+//         throw new Error(`riot redux connector expected a tag instance.`);
+//     }
+//     tag.on('unmount', () => {
+//         containers.del(tag);
+//     })
+//     //collect tag to set.
+//     tag.opts.mapStateToOpts = mapStateToOpts;
+//     tag.opts.mapDispatchToOpts = mapDispatchToOpts;
+//     containers.add(tag);
 
-    //find entry.
-    let pv = provider || recurFindProvider(tag);
-    mapStateToOpts && Object.assign(tag.opts, mapStateToOpts(pv.opts.store.getState(), tag.opts));
-    mapDispatchToOpts && Object.assign(tag.opts, mapDispatchToOpts(pv.opts.store.dispatch, tag.opts));
-};
+//     //find entry.
+//     let pv = provider || recurFindProvider(tag);
+//     mapStateToOpts && Object.assign(tag.opts, mapStateToOpts(pv.opts.store.getState(), tag.opts));
+//     mapDispatchToOpts && Object.assign(tag.opts, mapDispatchToOpts(pv.opts.store.dispatch, tag.opts));
+// };
 
 /**
  *   Bind application entry for the redux.
