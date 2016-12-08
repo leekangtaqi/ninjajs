@@ -8,6 +8,8 @@ var _riotRoute = require('riot-route');
 
 var _riotRoute2 = _interopRequireDefault(_riotRoute);
 
+var _hoc = require('./hoc');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function routerMiddlewareCreator(historyMode) {
@@ -64,4 +66,4 @@ function syncHistoryWithStore(hub, store) {
         // })
     });
 }
-exports.default = { routerMiddlewareCreator: routerMiddlewareCreator, syncHistoryWithStore: syncHistoryWithStore };
+exports.default = { routerMiddlewareCreator: routerMiddlewareCreator, syncHistoryWithStore: syncHistoryWithStore, view: _hoc.view };
