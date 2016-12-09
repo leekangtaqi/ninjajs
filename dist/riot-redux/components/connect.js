@@ -123,7 +123,9 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options) {
+function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
+    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { pure: true, withRef: false };
+
     var shouldSubscribe = Boolean(mapStateToOpts);
     var mapState = mapStateToOpts || defaultMapStateToOpts;
 
@@ -137,11 +139,6 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options) {
     }
 
     var finalMergeOpts = mergeOpts || defaultMergeOpts;
-    var _options$pure = options.pure,
-        pure = _options$pure === undefined ? true : _options$pure,
-        _options$withRef = options.withRef,
-        withRef = _options$withRef === undefined ? false : _options$withRef;
-
     var checkMergedEquals = pure && finalMergeOpts !== defaultMergeOpts;
 
     var version = nextVersion++;
