@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
 		value: true
 });
-exports.view = exports.connect = exports.provide = exports.Ninjia = exports.router = undefined;
+exports.view = exports.connect = exports.provider = exports.Ninjia = exports.router = undefined;
 
 var _router = require('./router');
 
@@ -25,6 +25,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var hub = _router2.default.hub;
 
+
+console.warn('provider ............');
+console.warn(_riotRedux.provider);
+console.warn("connect .............");
+console.warn(_riotRedux.connect);
 
 hub.view = (0, _view2.default)(hub);
 
@@ -48,6 +53,6 @@ hub.on('history-success', function (from, to) {
 
 exports.router = _router2.default;
 exports.Ninjia = _application2.default;
-exports.provide = _riotRedux.provide;
+exports.provider = _riotRedux.provider;
 exports.connect = _riotRedux.connect;
 exports.view = _riotRouterRedux.view;

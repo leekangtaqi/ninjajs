@@ -3,13 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.connect = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = connect;
 
 var _redux = require('redux');
 
@@ -122,7 +123,7 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-var connect = exports.connect = function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options) {
+function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options) {
     var shouldSubscribe = Boolean(mapStateToOpts);
     var mapState = mapStateToOpts || defaultMapStateToOpts;
 
@@ -400,4 +401,4 @@ var connect = exports.connect = function connect(mapStateToOpts, mapDispatchToOp
 
         return Connect;
     };
-};
+}
