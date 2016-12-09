@@ -1,8 +1,8 @@
 import router from './router';
 import Application from './application';
-import { provide, connect } from './riot-redux';
+import { provide, connect } from './riot-redux/index';
 import viewCreator from './view';
-import { view } from './riot-router-redux';
+import { view } from './riot-router-redux/index';
 
 let { hub } = router;
 
