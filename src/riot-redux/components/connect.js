@@ -76,7 +76,7 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options = {pure: true, withRef: false}) {
+export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options={pure: true, withRef: false}) {
     const shouldSubscribe = Boolean(mapStateToOpts)
     const mapState = mapStateToOpts || defaultMapStateToOpts;
 
