@@ -123,6 +123,12 @@ var throttle = function throttle(fn, wait) {
     }, wait);
 };
 
+var deepEqual = function deepEqual(x, y) {
+    return x && y && (typeof x === "undefined" ? "undefined" : _typeof(x)) === 'object' && (typeof y === "undefined" ? "undefined" : _typeof(y)) === 'object' ? Object.keys(x).length === Object.keys(y).length && Object.keys(x).reduce(function (isEqual, key) {
+        return isEqual && deepEqual(x[key], y[key]);
+    }, true) : x === y;
+};
+
 var filter = {
     ago: function ago(d) {
         if (typeof d === 'string') {
@@ -174,20 +180,14 @@ var filter = {
     }
 };
 
-var deepEqual = function deepEqual(x, y) {
-    return x && y && (typeof x === "undefined" ? "undefined" : _typeof(x)) === 'object' && (typeof y === "undefined" ? "undefined" : _typeof(y)) === 'object' ? Object.keys(x).length === Object.keys(y).length && Object.keys(x).reduce(function (isEqual, key) {
-        return isEqual && deepEqual(x[key], y[key]);
-    }, true) : x === y;
-};
-
 exports.default = {
     values: values,
     mixin: mixin,
     querystring: querystring,
     throttle: throttle,
-    filter: filter,
     clone: clone,
     deepEqual: deepEqual,
     omit: omit,
-    pick: pick
+    pick: pick,
+    filter: filter
 };

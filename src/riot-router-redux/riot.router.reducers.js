@@ -12,7 +12,7 @@ let initialRouteData = {
 const route = (route = initialRouteData, action) => {
     switch (action.type) {
         case '$enter':
-            var tagName = action.payload.$routePath;;
+            var tagName = action.payload.$routePath;
             var newOne = {
                 [tagName]: true
             };
@@ -20,7 +20,7 @@ const route = (route = initialRouteData, action) => {
                 $views: {...route.$views, ...newOne}
             })
         case '$leave':
-            var tagName = action.payload.$routePath;;
+            var tagName = action.payload.$routePath;
             return Object.assign({}, route, {
                 $views: Object.keys(route.$views)
                 .filter(v => v != tagName)

@@ -19,7 +19,7 @@ router.hub.on('history-resolve', (from, to, ctx, hints, next) => {
 		next();
 });
 
-router.hub.on('history-success', (from, to) => {
+router.on('history-success', function (from, to) {
 		// to && to.tag && to.tag.trigger('entered');
 });
 

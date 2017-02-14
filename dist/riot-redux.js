@@ -211,19 +211,24 @@ var provide = exports.provide = function provide(store) {
                 var distincts = recompute(prevSnapShot, currSnapShot);
                 var isEqual = !distincts || !distincts.length;
                 if (!isEqual) {
-                    distincts.forEach(function (k) {
-                        if (debug) {
-                            if (!distinctMap[getTagName(c)]) {
-                                distinctMap[getTagName(c)] = new TagContainerProxy();
-                            }
-                            distinctMap[c.opts && c.opts.riotTag || c.root.localName].add(k);
-                        }
+                    Object.keys(function (k) {
                         c.opts[k] = currSnapShot[k];
                     });
+                    // distincts.forEach(k => {
+                    //     if(debug){
+                    //         if(!distinctMap[getTagName(c)]){
+                    //             distinctMap[getTagName(c)] = new TagContainerProxy();
+                    //         }
+                    //         distinctMap[c.opts && c.opts.riotTag || c.root.localName].add(k);
+                    //     }
+                    //     c.opts[k] = currSnapShot[k];
+                    // });
                     // if the tag is on show or the tag to be show --> update it.
                     if (isShow(c, currState) || isPresent(c, currState)) {
                         if (isPresent(c, currState)) {
-                            c.ensureToUpdate = true;
+                            if (currState.lastAction.payload === c) {
+                                c.ensureToUpdate = currState.lastAction.type;
+                            }
                         }
                         toUpateSet.add(c);
                     }
@@ -247,8 +252,9 @@ var isShow = function isShow(c, state) {
     return c.opts.show || c.opts.$show;
 };
 var isPresent = function isPresent(c, state) {
-    return (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && state.lastAction.payload === c;
+    return state.lastAction.type === '$enter' || state.lastAction.type === '$leave';
 };
+// const isPresent = (c, state) => (state.lastAction.type === '$enter' || state.lastAction.type === '$leave') && (state.lastAction.payload === c);
 var getTagName = function getTagName(c) {
     return c.opts && c.opts.riotTag || c.root.localName;
 };
@@ -291,8 +297,15 @@ var compareAndUpate = function compareAndUpate(arr) {
         return getTagName(c);
     });
     refinedComponents.map(function (c) {
-        (isShow(c) || c.ensureToUpdate) && setTimeout(function () {
-            delete c['ensureToUpdate'];
+        c.isMounted && (isShow(c) || c.ensureToUpdate) && setTimeout(function () {
+            if (c.ensureToUpdate) {
+                if (c.ensureToUpdate === '$enter') {
+                    c.trigger('entered');
+                } else {
+                    c.trigger('leaved');
+                }
+                delete c['ensureToUpdate'];
+            }
             c.update();
         }, 0);
     });

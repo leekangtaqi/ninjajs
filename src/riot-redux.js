@@ -170,19 +170,24 @@ export const provide = store => {
                 let distincts = recompute(prevSnapShot, currSnapShot);
                 let isEqual = !distincts || !distincts.length;
                 if(!isEqual){
-                    distincts.forEach(k => {
-                        if(debug){
-                            if(!distinctMap[getTagName(c)]){
-                                distinctMap[getTagName(c)] = new TagContainerProxy();
-                            }
-                            distinctMap[c.opts && c.opts.riotTag || c.root.localName].add(k);
-                        }
+                    Object.keys(k => {
                         c.opts[k] = currSnapShot[k];
-                    });
+                    })
+                    // distincts.forEach(k => {
+                    //     if(debug){
+                    //         if(!distinctMap[getTagName(c)]){
+                    //             distinctMap[getTagName(c)] = new TagContainerProxy();
+                    //         }
+                    //         distinctMap[c.opts && c.opts.riotTag || c.root.localName].add(k);
+                    //     }
+                    //     c.opts[k] = currSnapShot[k];
+                    // });
                     // if the tag is on show or the tag to be show --> update it.
                     if(isShow(c, currState) || isPresent(c, currState)){
-                        if (isPresent(c, currState) && currState.lastAction.payload === c) {
-                            c.ensureToUpdate = currState.lastAction.type;
+                        if (isPresent(c, currState)) {
+                            if(currState.lastAction.payload === c){
+                                c.ensureToUpdate = currState.lastAction.type;
+                            }
                         }
                         toUpateSet.add(c);
                     }
@@ -241,7 +246,7 @@ const iterator = (index, during) => {
 const compareAndUpate = arr => {
     let refinedComponents = distinct(Array.from(flat(arr)), c => getTagName(c));
     refinedComponents.map(c => {
-        (isShow(c) || c.ensureToUpdate) && setTimeout(() => {
+        (c.isMounted && (isShow(c) || c.ensureToUpdate)) && setTimeout(() => {
             if(c.ensureToUpdate){
                 if(c.ensureToUpdate === '$enter'){
                     c.trigger('entered');

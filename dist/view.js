@@ -3,103 +3,114 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var rendererCreator = function rendererCreator(router) {
 
-    var renderer = {
-        setHandler: function setHandler(cb) {
-            renderer.handler = cb;
-        },
-        enter: function enter(tag, from, callback) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = function () {
+    function View() {
+        _classCallCheck(this, View);
+    }
+
+    _createClass(View, [{
+        key: 'setHandler',
+        value: function setHandler(callback) {
+            this.handler = cb;
+        }
+    }, {
+        key: 'enter',
+        value: function enter(tag, from, callback) {
             if (!tag) {
                 return;
             }
             tag.trigger('enter', from);
-            tag.opts.show = true;
-            tag.opts.hidden = false;
-            if (renderer.handler) {
-                return renderer.handler('enter', tag);
+            // tag.opts.show = true;
+            // tag.opts.hidden = false;
+            if (this.handler) {
+                return this.handler('enter', tag);
             }
             tag.update();
-        },
+        }
+    }, {
+        key: 'leaveUpstream',
+        value: function leaveUpstream(tag) {
+            var _this = this;
 
-        leaveUpstream: function leaveUpstream(tag) {
-            if (!tag || !tag.parent || !tag.parent.tags) {
+            if (!tag || !tag.parent || !tag.parent.tags || !tag.parent.tags['router-outlet']) {
                 return;
             }
-            Object.keys(tag.parent.tags).map(function (k) {
-                return tag.parent.tags[k];
-            }).filter(function (t) {
-                return t != tag;
+            var routes = tag.parent.tags['router-outlet'].routes;
+            var siblings = tag.parent.tags['router-outlet'].routes.filter(function (r) {
+                return r.tag && r.tag != tag;
+            });
+            if (!siblings || !siblings.length) {
+                return false;
+            }
+            siblings.map(function (t) {
+                return t.tag;
             }).forEach(function (t) {
-                if (t && t.opts.show) {
-                    renderer.leaveDownstream(t, tag);
+                if (t && (t.opts.show || t.opts.$show)) {
+                    _this.leaveDownstream(t, tag);
                 }
             });
-            return renderer.leaveUpstream(tag.parent);
-        },
+            return this.leaveUpstream(tag.parent);
+        }
+    }, {
+        key: 'leaveDownstream',
+        value: function leaveDownstream(tag, parent) {
+            var _this2 = this;
 
-        leaveDownstream: function leaveDownstream(tag, parent) {
             if (!tag) {
                 return;
             }
-            renderer.leave(tag, parent);
-            if (tag.tags && Object.keys(tag.tags).length) {
-                Object.keys(tag.tags).map(function (tagName, i) {
-                    var tmp = tag.tags[tagName];
-                    var t = null;
-                    if (Array.isArray(tmp)) {
-                        t = tmp[i];
-                    } else {
-                        t = tmp;
-                    }
-                    if (t && t.opts.show && !t.cache) {
-                        renderer.leave(t, tag);
-                        return renderer.leaveDownstream(t, tag);
-                    }
-                });
+            this.leave(tag, parent);
+            var outlet = tag.tags['router-outlet'];
+            if (!outlet) {
+                return;
             }
-        },
-
-        leave: function leave(tag, to, callback) {
+            var routes = outlet.routes;
+            if (!routes) {
+                return;
+            }
+            routes.map(function (r) {
+                return r.tag;
+            }).forEach(function (t) {
+                if (t && t.opts.$show && !t.cache) {
+                    _this2.leave(t, tag);
+                    return _this2.leaveDownstream(t, tag);
+                }
+            });
+        }
+    }, {
+        key: 'leave',
+        value: function leave(tag, to, callback) {
             if (!tag) {
                 return;
             }
             tag.trigger('leave', to);
             if (tag.opts.show || tag.opts.$show) {
-                tag.opts.show = false;
-                tag.opts.hidden = true;
-                if (renderer.handler) {
-                    return renderer.handler('leave', tag);
+                // tag.opts.show = false;
+                // tag.opts.hidden = true;
+                if (this.handler) {
+                    return this.handler('leave', tag);
                 }
                 tag.update();
             }
-        },
-
-        init: function init(tag, name) {
+        }
+    }, {
+        key: 'init',
+        value: function init(tag, name) {
             tag.opts.hidden = true;
             tag.opts.show = false;
         }
-    };
+    }]);
 
-    router.on('history-pending', function (from, to) {
-        if (from && from.tag) {
-            from.tag.trigger('before-leave');
-        }
-    });
+    return View;
+}();
 
-    router.on('history-resolve', function (from, to, ctx, hints, next) {
-        var fromTag = from && from.tag || null;
-        var toTag = to && to.tag || null;
-        renderer.enter(toTag, fromTag);
-        renderer.leaveUpstream(toTag);
-        next();
-    });
-
-    router.on('history-success', function (from, to) {
-        to && to.tag && to.tag.trigger('entered');
-    });
-
-    return renderer;
+var rendererCreator = function rendererCreator(router) {
+    return new View(router);
 };
 
 exports.default = rendererCreator;

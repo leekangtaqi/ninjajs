@@ -91,12 +91,12 @@ class Hub {
                 }
             }
         }
-        // if(prefix){
-        //     req.hints = req.hints.filter(hint => hint.length > prefix.length);
-        //     if(!req.hints.length){
-        //         return null;
-        //     }
-        // }
+        if(prefix){
+            req.hints = req.hints.filter(hint => hint.length > prefix.length);
+            if(!req.hints.length){
+                return null;
+            }
+        }
         return req;
     } 
 
@@ -111,7 +111,7 @@ class Hub {
      * @param ctx (Object)
      * @param redirect (Boolean)
      */
-    routeTo(route, ctx, hint, redirect = false, cb){
+    routeTo(route, ctx, hint, redirect = false, index, cb){
         this.busy = false;
         this.trigger('busy-resolve');
         if(redirect){
@@ -124,7 +124,7 @@ class Hub {
         }
         let $state = route.path;
         let $location = hint;
-        this.trigger('state-change', {$state, $location, ctx});
+        this.trigger('state-change', { $state, $location, ctx });
         if(route.redirectTo){
             riot.route(route.redirectTo);
             return true;
@@ -135,7 +135,8 @@ class Hub {
             route,
             tag: route.tag,
             $state,
-            $location
+            $location,
+            index
         }
         if(route.resolve){
             return route.resolve.apply(route.tag, [(data) => {this.routeToDone(data, ctx, addons, cb)}, ctx]);
@@ -218,7 +219,7 @@ class Hub {
         }
         if(!target && level === hints.length){
             if(node.defaultRoute){
-                this.routeTo(node.defaultRoute, ctx, hint, true);
+                this.routeTo(node.defaultRoute, ctx, hint, true, level);
                 return {ctx, components: components.concat(target)};
             }
             console.info('404');
@@ -244,17 +245,17 @@ class Hub {
             }
             function done(){
                 let outletEl = outlet.root.querySelector(`div[data-tag-name="${target.component}"]`)
-                if(!target.tag){
-                    let tag = riot.mount(outletEl, `${target.component}`)[0];
-                    tag.$routePath = target.path;
+                if(!target.tag || !target.tag.isMounted){
+                    let tag = riot.mount(outletEl, target.component)[0];
                     if(tag){
+                        tag.$routePath = target.path;
                         outlet.parent.tags[tag.opts.riotTag] = tag;
                         tag.parent = outlet.parent;
                         target.tag = tag;
                     }
                 }
                 if(target.tag){
-                    return this.routeTo(target, ctx, hint, false, () => {
+                    return this.routeTo(target, ctx, hint, false, level, () => {
                         if(hints[level + 1]){
                                 return this.recurMatch(ctx, target.tag, level + 1, routes, components.concat(target));
                         }
@@ -287,7 +288,7 @@ class Hub {
      * @param addons (Object)
      * @param cb (Function)
      */
-    routeToDone(data, ctx, {hints, req, route, tag, $state, $location}, cb){
+    routeToDone(data, ctx, {hints, req, route, tag, $state, $location, index}, cb){
         let me = this;
         if(ctx && data){
             !ctx.body && (ctx.body = {});
@@ -306,14 +307,14 @@ class Hub {
                     tag.$mws,
                     ctx, 
                     () => {
-                        me.routeSuccess(data, ctx, {hints, req, route, tag, $state, $location}, cb);
+                        me.routeSuccess(data, ctx, {hints, req, route, tag, $state, $location, index}, cb);
                     }
                 ),
             );
         });
     }
 
-    routeSuccess(data, ctx, {hints, req, route, tag, $state, $location}, cb){
+    routeSuccess(data, ctx, {hints, req, route, tag, $state, $location, index}, cb){
         let me = this;
         let from = me.getMetaDataFromRouteMap(me.location).route;
         let to = route;
@@ -325,6 +326,7 @@ class Hub {
                 to, 
                 ctx, 
                 hints, 
+                index,
                 () => {
                     me.trigger('history-success',
                         from, 

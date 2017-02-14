@@ -8,8 +8,8 @@ class View {
             return;
         }
         tag.trigger('enter', from);
-        tag.opts.show = true;
-        tag.opts.hidden = false;
+        // tag.opts.show = true;
+        // tag.opts.hidden = false;
         if(this.handler){
             return this.handler('enter', tag);    
         }
@@ -60,10 +60,10 @@ class View {
         }
         tag.trigger('leave', to); 
         if(tag.opts.show || tag.opts.$show){
-            tag.opts.show = false;
-            tag.opts.hidden = true;
-            if(renderer.handler){
-                return renderer.handler('leave', tag);    
+            // tag.opts.show = false;
+            // tag.opts.hidden = true;
+            if(this.handler){
+                return this.handler('leave', tag);    
             }
             tag.update();
         }

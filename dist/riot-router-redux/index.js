@@ -20,9 +20,9 @@ function syncHistoryWithStore(hub, store) {
 
         var route = store.getState().route;
         var query = route.data.req.query;
-        if (query[param] && (query[param] = value)) {
-            return;
-        }
+        // if(query[param] && (query[param] = value)){
+        //     return;
+        // }
         query[param] = value;
         riot.route(route.$location + '?' + $.util.querystring.stringify(query), null, true);
     });
