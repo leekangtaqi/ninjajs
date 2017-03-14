@@ -11,6 +11,7 @@ let initialRouteData = {
 };
 const route = (route = initialRouteData, action) => {
     switch (action.type) {
+
         case '$enter':
             var tagName = action.payload.$routePath;;
             var newOne = {
@@ -19,6 +20,7 @@ const route = (route = initialRouteData, action) => {
             return Object.assign({}, route, {
                 $views: {...route.$views, ...newOne}
             })
+
         case '$leave':
             var tagName = action.payload.$routePath;;
             return Object.assign({}, route, {
@@ -29,6 +31,7 @@ const route = (route = initialRouteData, action) => {
                     return o;
                 }, {})
             })
+
         case '$route':
             return Object.assign({}, route, {
                 $prev_state: route.$state,
@@ -39,6 +42,7 @@ const route = (route = initialRouteData, action) => {
                 $host: route.$host,
                 data: action.payload.route.ctx
             });
+
         case '$query':
             return Object.assign({}, route, {
                 $prev_state: route.$state,
@@ -57,10 +61,13 @@ const route = (route = initialRouteData, action) => {
                     }
                 )
             })
+
         case '$routeBusy':
             return Object.assign({}, route, {busy: true});
+
         case '$routeUnBusy':
             return Object.assign({}, route, {busy: false});
+            
         default:
             return route;
     }

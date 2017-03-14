@@ -1,4 +1,4 @@
-import * as connect from './components/connect';
-import * as provider from './components/provider';
+import Connect from './components/connect';
+import provider from './components/provider';
 
-export { connect, provider };
+export { Connect, provider };

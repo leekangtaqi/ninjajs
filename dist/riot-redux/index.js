@@ -3,17 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.provider = exports.connect = undefined;
+exports.provider = exports.Connect = undefined;
 
 var _connect = require('./components/connect');
 
-var connect = _interopRequireWildcard(_connect);
+var _connect2 = _interopRequireDefault(_connect);
 
 var _provider = require('./components/provider');
 
-var provider = _interopRequireWildcard(_provider);
+var _provider2 = _interopRequireDefault(_provider);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.connect = connect;
-exports.provider = provider;
+exports.Connect = _connect2.default;
+exports.provider = _provider2.default;

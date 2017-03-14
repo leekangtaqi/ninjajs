@@ -3,12 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.View = exports.syncHistoryWithStore = exports.routerMiddlewareCreator = undefined;
 
 var _riotRoute = require('riot-route');
 
 var _riotRoute2 = _interopRequireDefault(_riotRoute);
 
 var _hoc = require('./hoc');
+
+var _hoc2 = _interopRequireDefault(_hoc);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66,4 +69,8 @@ function syncHistoryWithStore(hub, store) {
         // })
     });
 }
-exports.default = { routerMiddlewareCreator: routerMiddlewareCreator, syncHistoryWithStore: syncHistoryWithStore, view: _hoc.view };
+
+exports.default = { routerMiddlewareCreator: routerMiddlewareCreator, syncHistoryWithStore: syncHistoryWithStore, View: _hoc2.default };
+exports.routerMiddlewareCreator = routerMiddlewareCreator;
+exports.syncHistoryWithStore = syncHistoryWithStore;
+exports.View = _hoc2.default;

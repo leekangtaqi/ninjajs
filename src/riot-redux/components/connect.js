@@ -1,10 +1,10 @@
 import { bindActionCreators } from 'redux';
-import * as riot from 'riot';
 import warning from '../util/warning';
 import invariant from '../util/invariant';
 import isPlainObject from '../util/isPlainObject';
 import shallowEqual from '../util/shallowEqual';
 import { getProvider } from './provider';
+import _ from '../../util';
 
 const defaultMapStateToOpts = state => ({});
 const defaultMapDispatchToOpts = dispatch => ({ dispatch });
@@ -14,7 +14,9 @@ const defaultMergeOpts = (stateOpts, dispatchOpts, parentOpts) => ({
     ...dispatchOpts
 });
 
-const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const getDisplayName = WrappedComponent => {
+    return WrappedComponent.displayName || _.lineToCamel(WrappedComponent.originName) || 'Component';
+}
 
 let errorObject = { value: null };
 function tryCatch(fn , ctx) {
@@ -76,12 +78,14 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options={pure: true, withRef: false}) {
+export default function Connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, options={pure: true, withRef: false}) {
     const shouldSubscribe = Boolean(mapStateToOpts)
     const mapState = mapStateToOpts || defaultMapStateToOpts;
 
+    const { pure, withRef } = options
+
     let mapDispatch = null;
-    if(typeof mapDispatchToOpts === 'function'){
+    if (typeof mapDispatchToOpts === 'function') {
         mapDispatch = mapDispatchToOpts;
     } else if (!mapDispatchToOpts) {
         mapDispatch = defaultMapDispatchToOpts;
@@ -94,10 +98,10 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
 
     const version = nextVersion++;
 
-    return function wrapWithConnect(WrappedComponent){
+    return function wrapWithConnect(WrappedComponent) {
         const connectDisplayName = `Connect(${getDisplayName(WrappedComponent)})`;
 
-        function checkStateShape(opts, methodName){
+        function checkStateShape(opts, methodName) {
             if (!isPlainObject(opts)) {
                 warning(
                     `${methodName}() in ${connectDisplayName} must return a plain object. ` +
@@ -114,11 +118,15 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
             return mergedOpts;
         }
 
-        class Connect extends WrappedComponent{
+        class Connect extends WrappedComponent {
+            get name() {
+                return 'connect-' + super.name || WrappedComponent.name
+            }
+
             onCreate(opts) {
                 this.version = version;
                 this.store = opts.store || getProvider(this).opts.store;
-
+                this.displayName = connectDisplayName;
                 const storeState = this.store.getState();
 
                 invariant(this.store,
@@ -129,6 +137,7 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
                 )
 
                 this.state = { storeState }
+
                 this.clearCache();
 
 
@@ -193,6 +202,7 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
 
                 const storeState = this.store.getState()
                 const prevStoreState = this.state.storeState
+                
                 if (pure && prevStoreState === storeState) {
                     return
                 }
@@ -207,12 +217,14 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
                     }
                     this.haveStateOptsBeenPrecalculated = true
                 }
+                
 
                 this.hasStoreStateChanged = true
                 this.update({state: storeState})
             }
 
             componentDidMount() {
+                this.render()
                 this.trySubscribe()
             }
 
@@ -274,6 +286,33 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
                 return stateOpts
             }
 
+            computeDispatchOpts(store, opts) {
+                if (!this.finalMapDispatchToOpts) {
+                    return this.configureFinalMapDispatch(store, opts)
+                }
+
+                const { dispatch } = store
+                const dispatchOpts = this.doDispatchOptsDependOnOwnProps ?
+                this.finalMapDispatchToOpts(dispatch, opts) :
+                this.finalMapDispatchToOpts(dispatch)
+
+                return dispatchOpts
+            }
+
+            configureFinalMapDispatch(store, opts) {
+                const mappedDispatch = mapDispatch(store.dispatch, opts)
+                const isFactory = typeof mappedDispatch === 'function'
+
+                this.finalMapDispatchToOpts = isFactory ? mappedDispatch : mapDispatch
+                this.doDispatchOptsDependOnOwnOpts = this.finalMapDispatchToOpts.length !== 1
+
+                if (isFactory) {
+                    return this.computeDispatchOpts(store, opts)
+                }
+
+                return mappedDispatch
+            }
+
             render () {
                 const {
                     haveOwnOptsChanged,
@@ -332,10 +371,15 @@ export default function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
 
                 this.renderedElement = true;
 
-                Object.assign(this, {...mergedOpts});
+                Object.assign(this.opts, {...this.mergedOpts});
+
+                setTimeout(() => {
+                    this.update();
+                }, 0)
+                
             }
         }
-
+        
         Connect.displayName = connectDisplayName;
         Connect.WrappedComponent = WrappedComponent;
 

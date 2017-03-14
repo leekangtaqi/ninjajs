@@ -24,12 +24,14 @@ var route = function route() {
     var action = arguments[1];
 
     switch (action.type) {
+
         case '$enter':
             var tagName = action.payload.$routePath;;
             var newOne = _defineProperty({}, tagName, true);
             return Object.assign({}, route, {
                 $views: _extends({}, route.$views, newOne)
             });
+
         case '$leave':
             var tagName = action.payload.$routePath;;
             return Object.assign({}, route, {
@@ -40,6 +42,7 @@ var route = function route() {
                     return o;
                 }, {})
             });
+
         case '$route':
             return Object.assign({}, route, {
                 $prev_state: route.$state,
@@ -50,6 +53,7 @@ var route = function route() {
                 $host: route.$host,
                 data: action.payload.route.ctx
             });
+
         case '$query':
             return Object.assign({}, route, {
                 $prev_state: route.$state,
@@ -66,10 +70,13 @@ var route = function route() {
                     }
                 })
             });
+
         case '$routeBusy':
             return Object.assign({}, route, { busy: true });
+
         case '$routeUnBusy':
             return Object.assign({}, route, { busy: false });
+
         default:
             return route;
     }

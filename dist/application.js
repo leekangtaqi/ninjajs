@@ -5,11 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.provide = exports.connect = undefined;
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _riot = require('riot');
 
-var riot = _interopRequireWildcard(_riot);
+var _riot2 = _interopRequireDefault(_riot);
 
 var _store = require('./store');
 
@@ -17,15 +19,17 @@ var _riotRouterRedux = require('./riot-router-redux');
 
 var _riotRouterRedux2 = _interopRequireDefault(_riotRouterRedux);
 
-var _router2 = require('./router');
+var _router2 = require('./riot-router/router');
 
 var _router3 = _interopRequireDefault(_router2);
 
 var _riotRedux = require('./riot-redux');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _reducer = require('./riot-redux-form/reducer');
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _reducer2 = _interopRequireDefault(_reducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -47,20 +51,22 @@ var Ninjia = function () {
 		if (!container) {
 			throw new Error('a container expected.');
 		}
-		this.framework = riot;
+		this.framework = _riot2.default;
 		this.container = container;
-		this.reducer = reducer;
+		var finalReducer = _extends({}, reducer, _reducer2.default);
+		this.reducer = finalReducer;
 		this.middlewares = middlewares;
 		this.buildInProps = ['env', 'entry', 'context', 'mode'];
 		this._mode = 'hash';
-		this._store = (0, _store.configureStore)(state, reducer, middlewares, this._mode);
+		this._store = (0, _store.configureStore)(state, this.reducer, middlewares, this._mode);
 		this.router(_router3.default);
 		this._context = {
 			store: this._store,
 			hub: {},
 			tags: {}
 		};
-		this.emitter = riot.observable({});
+		_riot2.default.util.tmpl.errorHandler = function (e) {};
+		this.emitter = _riot2.default.observable({});
 		container.widgets = this._widgets = {};
 	}
 
@@ -96,6 +102,7 @@ var Ninjia = function () {
 		key: 'router',
 		value: function router(_router) {
 			this._router = _router;
+			_router.app = this;
 			_riotRouterRedux2.default.syncHistoryWithStore(this._router.hub, this._store);
 			return this;
 		}
@@ -107,7 +114,8 @@ var Ninjia = function () {
 			var name = _ref2.name,
 			    methods = _ref2.methods;
 
-			var component = riot.mount(name)[0];
+			var components = _riot2.default.mount(name);
+			var component = components[0];
 			this._context.tags[name] = component;
 			var upperName = name.replace(/(\w)/, function (v) {
 				return v.toUpperCase();

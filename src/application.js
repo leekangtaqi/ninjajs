@@ -1,8 +1,9 @@
-import * as riot from 'riot'; 
+import riot from 'riot'; 
 import { configureStore } from './store';
 import riotRouterRedux from './riot-router-redux';
-import router from './router';
+import router from './riot-router/router';
 import { provide, connect } from './riot-redux';
+import formReducer from './riot-redux-form/reducer';
 
 class Ninjia {
 	/**
@@ -14,17 +15,19 @@ class Ninjia {
 		}
 		this.framework = riot;
 		this.container = container;
-		this.reducer = reducer;
+		let finalReducer = { ...reducer, ...formReducer };
+		this.reducer = finalReducer;
 		this.middlewares = middlewares;
 		this.buildInProps = ['env', 'entry', 'context', 'mode'];
 		this._mode = 'hash';
-		this._store = configureStore(state, reducer, middlewares, this._mode);
+		this._store = configureStore(state, this.reducer, middlewares, this._mode);
 		this.router(router);
 		this._context = {
 				store: this._store,
 				hub: {},
 				tags: {}
 		};
+		riot.util.tmpl.errorHandler = e => {}
 		this.emitter = riot.observable({});
 		container.widgets = this._widgets = {};
 	}
@@ -57,12 +60,14 @@ class Ninjia {
 
 	router(router){
 		this._router = router;
+		router.app = this;
 		riotRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
 		return this;
 	}
 
 	registerWidget({name, methods}){
-		let component = riot.mount(name)[0];
+		let components = riot.mount(name);
+		let component = components[0]
 		this._context.tags[name] = component;
 		let upperName = name.replace(/(\w)/, v => v.toUpperCase());
 		this._widgets[upperName] = {};

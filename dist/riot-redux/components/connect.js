@@ -10,13 +10,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports.default = connect;
+exports.default = Connect;
 
 var _redux = require('redux');
-
-var _riot = require('riot');
-
-var riot = _interopRequireWildcard(_riot);
 
 var _warning = require('../util/warning');
 
@@ -36,9 +32,11 @@ var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
 var _provider = require('./provider');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _util = require('../../util');
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -57,7 +55,7 @@ var defaultMergeOpts = function defaultMergeOpts(stateOpts, dispatchOpts, parent
 };
 
 var getDisplayName = function getDisplayName(WrappedComponent) {
-    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+    return WrappedComponent.displayName || _util2.default.lineToCamel(WrappedComponent.originName) || 'Component';
 };
 
 var errorObject = { value: null };
@@ -123,11 +121,15 @@ function hoistStatics(targetComponent, sourceComponent) {
 /**
  * A HOC for connect the tag to redux store. (react-redux like)
  */
-function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
+function Connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
     var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { pure: true, withRef: false };
 
     var shouldSubscribe = Boolean(mapStateToOpts);
     var mapState = mapStateToOpts || defaultMapStateToOpts;
+
+    var pure = options.pure,
+        withRef = options.withRef;
+
 
     var mapDispatch = null;
     if (typeof mapDispatchToOpts === 'function') {
@@ -174,12 +176,13 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
                 value: function onCreate(opts) {
                     this.version = version;
                     this.store = opts.store || (0, _provider.getProvider)(this).opts.store;
-
+                    this.displayName = connectDisplayName;
                     var storeState = this.store.getState();
 
                     (0, _invariant2.default)(this.store, 'Could not find "store" in either the context or ' + ('opts of "' + connectDisplayName + '". ') + 'Either wrap the root component in a Provider, ' + ('or explicitly pass "store" as a opt to "' + connectDisplayName + '".'));
 
                     this.state = { storeState: storeState };
+
                     this.clearCache();
 
                     this.on('mount', this.componentDidMount);
@@ -248,6 +251,7 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
 
                     var storeState = this.store.getState();
                     var prevStoreState = this.state.storeState;
+
                     if (pure && prevStoreState === storeState) {
                         return;
                     }
@@ -269,6 +273,7 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
             }, {
                 key: 'componentDidMount',
                 value: function componentDidMount() {
+                    this.render();
                     this.trySubscribe();
                 }
             }, {
@@ -335,8 +340,38 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
                     return stateOpts;
                 }
             }, {
+                key: 'computeDispatchOpts',
+                value: function computeDispatchOpts(store, opts) {
+                    if (!this.finalMapDispatchToOpts) {
+                        return this.configureFinalMapDispatch(store, opts);
+                    }
+
+                    var dispatch = store.dispatch;
+
+                    var dispatchOpts = this.doDispatchOptsDependOnOwnProps ? this.finalMapDispatchToOpts(dispatch, opts) : this.finalMapDispatchToOpts(dispatch);
+
+                    return dispatchOpts;
+                }
+            }, {
+                key: 'configureFinalMapDispatch',
+                value: function configureFinalMapDispatch(store, opts) {
+                    var mappedDispatch = mapDispatch(store.dispatch, opts);
+                    var isFactory = typeof mappedDispatch === 'function';
+
+                    this.finalMapDispatchToOpts = isFactory ? mappedDispatch : mapDispatch;
+                    this.doDispatchOptsDependOnOwnOpts = this.finalMapDispatchToOpts.length !== 1;
+
+                    if (isFactory) {
+                        return this.computeDispatchOpts(store, opts);
+                    }
+
+                    return mappedDispatch;
+                }
+            }, {
                 key: 'render',
                 value: function render() {
+                    var _this2 = this;
+
                     var haveOwnOptsChanged = this.haveOwnOptsChanged,
                         hasStoreStateChanged = this.hasStoreStateChanged,
                         haveStateOptsBeenPrecalculated = this.haveStateOptsBeenPrecalculated,
@@ -386,7 +421,16 @@ function connect(mapStateToOpts, mapDispatchToOpts, mergeOpts) {
 
                     this.renderedElement = true;
 
-                    Object.assign(this, _extends({}, mergedOpts));
+                    Object.assign(this.opts, _extends({}, this.mergedOpts));
+
+                    setTimeout(function () {
+                        _this2.update();
+                    }, 0);
+                }
+            }, {
+                key: 'name',
+                get: function get() {
+                    return 'connect-' + _get(Connect.prototype.__proto__ || Object.getPrototypeOf(Connect.prototype), 'name', this) || WrappedComponent.name;
                 }
             }]);
 

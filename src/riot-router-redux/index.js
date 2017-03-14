@@ -1,5 +1,5 @@
 import route from 'riot-route';
-import { view } from './hoc';
+import View from './hoc';
 
 function routerMiddlewareCreator(historyMode){
     return store => next => action => {
@@ -49,4 +49,6 @@ function syncHistoryWithStore(hub, store){
         // })
     })
 }
-export default {routerMiddlewareCreator, syncHistoryWithStore, view}
+
+export default { routerMiddlewareCreator, syncHistoryWithStore, View }
+export { routerMiddlewareCreator, syncHistoryWithStore, View }

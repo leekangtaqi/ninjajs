@@ -6,6 +6,16 @@ const mixin = (...args) => {
     return Object.assign(...args)
 }
 
+const intersect = (arr1, arr2) => {
+    let res = [];
+    for (let i=0, len=arr1.length; i<len; i++) {
+        if (arr2.indexOf(arr1[i]) >= 0) {
+            res.push(arr1[i])
+        }
+    }
+    return res;
+}
+
 const pick = (o, ...fs) =>
     Object.keys(o)
         .filter(f => fs.indexOf(f) >= 0)
@@ -15,14 +25,20 @@ const pick = (o, ...fs) =>
             return acc;
         }, {})
 
-const omit = (o, ...fs) => 
-    Object.keys(o)
+const omit = (o, ...fs) => {
+    let args = fs;
+    let p1 = fs[0];
+    if (Array.isArray(p1)) {
+        fs = p1;
+    }
+    return Object.keys(o)
         .filter(f => fs.indexOf(f) < 0)
         .map(f=>({key: f, val: o[f]}))
         .reduce((acc, pair) => {
             acc[pair.key] = pair.val;
             return acc;
         }, {})
+}
         
 const clone = item => {
     if (!item) { return item; } // null, undefined values check
@@ -100,6 +116,86 @@ const deepEqual = (x, y) => {
       }, true) : (x === y);
 }
 
+const lineToCamel = str => {
+    if (!str || typeof str !== 'string') {
+        throw new Error(`[util-line to camel]: expected a string`);
+    }
+    return str.split('-').reduce((acc, curr) => {
+        let first = curr.slice(0, 1);
+        let last = curr.slice(1);
+        return `${acc}${first.toUpperCase()}${last}`
+    }, '');
+}
+
+const camelToLine = str => {
+    let res = "";
+    for (let i=0, len=str.length; i<len; i++) {
+        let c = str.charAt(i);
+        if (/^[A-Z]+$/.test(c)) {
+            if (i===0) {
+                res += `${c.toLowerCase()}`;
+            } else {
+                res += `-${c.toLowerCase()}`;
+            }
+        } else {
+            res += c;
+        }
+    }
+    return res;
+}
+
+function extractField(o){
+    return exclude(o,
+        "$name",
+        "$dirty",
+        "$pristine",
+        "$valid",
+        "$invalid",
+        "$submitted",
+        "$error",
+        "$ok",
+        "$allPristine",
+        "$allDirty",
+        "$validate",
+		"$meta"
+    );
+}
+
+function exclude() {
+    var args = [].slice.apply(arguments);
+    var o = args[0];
+    var props = args.slice(1);
+    var res = {};
+    for(var p in o){
+        if(props.indexOf(p) < 0){
+            res[p] = o[p]
+        }
+    }
+    return res;
+}
+
+function hasClass(el, className) {
+	if (el.classList)
+		return el.classList.contains(className);
+	else
+		return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+}
+
+function addClass(el, className) {
+	if (el.classList)
+		el.classList.add(className);
+	else if (!hasClass(el, className)) el.className += " " + className
+}
+
+function removeClass(el, className) {
+	if (el.classList)
+		el.classList.remove(className);
+	else if (hasClass(el, className)) {
+		var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+		el.className=el.className.replace(reg, ' ')
+	}
+}
+
 export default {
     values, 
     mixin, 
@@ -108,5 +204,13 @@ export default {
     clone, 
     deepEqual,
     omit,
-    pick
+    pick,
+    camelToLine,
+    lineToCamel,
+    exclude,
+    extractField,
+    hasClass,
+    addClass,
+    removeClass,
+    intersect
 }
