@@ -174,7 +174,8 @@ class Foo extends riot.Tag {
   
   // decorator onUse <Function>
   // @param <Array | String>, when nav to this component, the methods will be invoke, get from opts.
-  //   each method will be injected a callback ( component will be present when the callback invoked ) and a router context   //   object. eg: const enterFoo = (next, ctx)
+  //   each method will be injected a callback ( component will be present when the callback invoked ) and a router context
+  //   object. eg: const enterFoo = (next, ctx)
   @onUse('enterFoo')
   onCreate(opts) {}
 }
