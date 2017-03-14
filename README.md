@@ -53,7 +53,6 @@ app.start(async () => {
 ```
 
 ### Component
-===
 
 #### define component
 
@@ -91,7 +90,6 @@ export default class Todo extends riot.Tag {}
 
 
 ### Router
-===
 
 ### define routes
 ```javascript
