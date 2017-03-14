@@ -8,15 +8,46 @@ frontend framework based on riot, redux.
 
 ##Geting Started
 
-###Install
+##Install
 
-```
+```shell
 npm install ninjiajs
 ```
 
-### Usage
+## Usage
+### Router
+===
 
-routes.js
+### define routes
+```javascript
+import TodoList from '...path to component';
+
+export default {
+	component: App,
+	path: '',
+	children: [
+		{
+			path: '/',
+			component: TodoList,
+			defaultRoute: true
+		}
+	]}
+```
+#### Fields
+| field         | type          | desc  |
+| ------------- |:-------------:| :-----|
+| path          | string        | Corresponding URI, Relative path |
+| component     | Object        | Component constructors |
+| children      | Array         | sub routes outlets           |
+| defaultRoute  | Boolean       | specify that this is a default route |
+| components    | Object        | dynamic route defined, get identifier from query string |
+| abstract      | Boolean       | specify that this is a abstract route, no Corresponding component |
+| ...others     | Any           | will be get from context.req.body           |
+
+
+### Usage v2.* (Deprecated)
+
+#### routes.js
 ```javascript
 export default {
 	component: 'app',
@@ -39,6 +70,8 @@ export default {
 	]
 }
 ```
+
+
 
 ```javascript
 //main.js
