@@ -216,24 +216,24 @@ app.hub.subscribe('history-resolve', (from, to, ctx, hints, index) => {})
 #### routes.js
 ```javascript
 export default {
-	component: 'app',
-	children: [
-		{
-			path: '/',
-			defaultRoute: true,
-			component: 'count',
-		},
-		{
-			path: '/test',
-			component: 'test',
-			children: [
-				{
-					path: '/test2',
-					component: 'test2'
-				}
-			]
-		}
-	]
+  component: 'app',
+  children: [
+    {
+      path: '/',
+      defaultRoute: true,
+      component: 'count',
+    },
+    {
+      path: '/test',
+      component: 'test',
+      children: [
+        {
+          path: '/test2',
+          component: 'test2'
+        }
+      ]
+    }
+  ]
 }
 ```
 
