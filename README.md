@@ -96,15 +96,16 @@ export default class Todo extends riot.Tag {}
 import TodoList from '...path to component';
 
 export default {
-	component: App,
-	path: '',
-	children: [
-		{
-			path: '/',
-			component: TodoList,
-			defaultRoute: true
-		}
-	]}
+  component: App,
+  path: '',
+  children: [
+    {
+      path: '/',
+      component: TodoList,
+      defaultRoute: true
+    }
+  ]
+}
 ```
 #### Fields
 | field         | type          | desc  |
