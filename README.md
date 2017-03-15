@@ -23,9 +23,9 @@ main.js
 ```javascript
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
-app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
+//app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
 
-app.set('mode', 'browser')
+//app.set('mode', 'browser')
 
 app.set('context', { store: app.store, hub: router.hub, tags: {}, util: ...util})
 
