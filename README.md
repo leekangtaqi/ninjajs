@@ -52,7 +52,7 @@ app.start(async () => {
 
 ### Component
 
-#### define component
+#### Define component
 
 ```javascript
 @Componnet // register this component to hub, in order to use it in html directly.
@@ -89,7 +89,7 @@ export default class Todo extends riot.Tag {}
 
 ### Router
 
-### define routes
+### Define routes
 
 ```javascript
 import TodoList from '...path to component';
@@ -125,7 +125,7 @@ export default {
 | body     | Object      |
 | query    | Object      |
 
-#### router outlet in html
+#### Router outlet in html
 ```html
 <div class="component">
   <div>greeting!</div>
@@ -133,7 +133,7 @@ export default {
 </div>
 ```
 
-#### component life cycle about router
+#### Component life cycle about router
 
 | evts         | 
 | ------------ |
@@ -178,7 +178,7 @@ class Foo extends riot.Tag {
 }
 ```
 
-#### route hooks
+#### Route hooks
 
 1. history-pending
 
@@ -283,8 +283,9 @@ require('path-to-nest');
 
 ```
 
-##Example
+## More
 source for more detail    
 
-##QQ
-2811786667
+## Contact
+
+QQ: 2811786667
