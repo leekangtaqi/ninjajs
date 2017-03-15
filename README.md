@@ -1,8 +1,9 @@
 # NinjiaJs
 
-<img width="240" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
 
-frontend framework based on riot, redux.
+**Micro and elegant frontend framework**
+
 
 ---
 
@@ -11,7 +12,7 @@ frontend framework based on riot, redux.
 ## Install
 
 ```shell
-npm install ninjiajs
+$ npm install ninjiajs
 ```
 
 ## Usage
