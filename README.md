@@ -6,9 +6,9 @@ frontend framework based on riot, redux.
 
 ---
 
-##Geting Started
+## Geting Started
 
-##Install
+## Install
 
 ```shell
 npm install ninjiajs
@@ -22,8 +22,6 @@ main.js
 
 ```javascript
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
-
-app.config = config
 
 app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
 
@@ -92,6 +90,7 @@ export default class Todo extends riot.Tag {}
 ### Router
 
 ### define routes
+
 ```javascript
 import TodoList from '...path to component';
 
