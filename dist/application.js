@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.provide = exports.connect = undefined;
+exports.provider = exports.connect = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -28,6 +28,10 @@ var _riotRedux = require('./riot-redux');
 var _reducer = require('./riot-redux-form/reducer');
 
 var _reducer2 = _interopRequireDefault(_reducer);
+
+var _util = require('./util');
+
+var _util2 = _interopRequireDefault(_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56,13 +60,13 @@ var Ninjia = function () {
 		var finalReducer = _extends({}, reducer, _reducer2.default);
 		this.reducer = finalReducer;
 		this.middlewares = middlewares;
-		this.buildInProps = ['env', 'entry', 'context', 'mode'];
+		this.buildInProps = ['env', 'entry', 'context', 'mode', 'routes'];
 		this._mode = 'hash';
 		this._store = (0, _store.configureStore)(state, this.reducer, middlewares, this._mode);
 		this.router(_router3.default);
 		this._context = {
 			store: this._store,
-			hub: {},
+			hub: _router3.default.hub,
 			tags: {}
 		};
 		_riot2.default.util.tmpl.errorHandler = function (e) {};
@@ -73,9 +77,10 @@ var Ninjia = function () {
 	_createClass(Ninjia, [{
 		key: 'set',
 		value: function set(prop, val) {
-			this['_' + prop] = val;
 			switch (this.accseptSet(prop)) {
+
 				case 'mode':
+					this['_' + prop] = val;
 					var initialState = {};
 					if (this.store) {
 						initialState = this.store.getState();
@@ -85,9 +90,29 @@ var Ninjia = function () {
 						_riotRouterRedux2.default.syncHistoryWithStore(this._router.hub, this._store);
 						this.mixin('router', this._router);
 					}
-				case 'context':
-					this.container = this._context;
 					break;
+
+				case 'context':
+					_util2.default.mixin(this._context, val);
+					break;
+
+				case 'routes':
+					if (!this._router || !this._router.hub) {
+						throw new Error('ninjia compose routes expected a router hub.');
+					}
+					this._router.hub.routes = val;
+					this.router(this._router);
+					break;
+
+				case 'entry':
+					this['_' + prop] = val;
+					this.hub.root = val;
+					// set provider for redux.
+					(0, _riotRedux.provider)(this.store)(val);
+					break;
+
+				default:
+					this['_' + prop] = val;
 			}
 		}
 	}, {
@@ -264,4 +289,4 @@ var appCreator = function appCreator(params) {
 
 exports.default = appCreator;
 exports.connect = _riotRedux.connect;
-exports.provide = _riotRedux.provide;
+exports.provider = _riotRedux.provider;

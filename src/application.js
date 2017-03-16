@@ -1,9 +1,10 @@
-import riot from 'riot'; 
-import { configureStore } from './store';
-import riotRouterRedux from './riot-router-redux';
-import router from './riot-router/router';
-import { provide, connect } from './riot-redux';
-import formReducer from './riot-redux-form/reducer';
+import riot from 'riot'
+import { configureStore } from './store'
+import riotRouterRedux from './riot-router-redux'
+import router from './riot-router/router'
+import { provider, connect } from './riot-redux'
+import formReducer from './riot-redux-form/reducer'
+import _ from './util'
 
 class Ninjia {
 	/**
@@ -18,13 +19,13 @@ class Ninjia {
 		let finalReducer = { ...reducer, ...formReducer };
 		this.reducer = finalReducer;
 		this.middlewares = middlewares;
-		this.buildInProps = ['env', 'entry', 'context', 'mode'];
+		this.buildInProps = ['env', 'entry', 'context', 'mode', 'routes'];
 		this._mode = 'hash';
 		this._store = configureStore(state, this.reducer, middlewares, this._mode);
 		this.router(router);
 		this._context = {
 				store: this._store,
-				hub: {},
+				hub: router.hub,
 				tags: {}
 		};
 		riot.util.tmpl.errorHandler = e => {}
@@ -33,9 +34,10 @@ class Ninjia {
 	}
 
 	set(prop, val){
-		this[`_${prop}`] = val;
 		switch(this.accseptSet(prop)){
+
 			case 'mode':
+				this[`_${prop}`] = val;
 				var initialState = {};
 				if(this.store){
 					initialState = this.store.getState();
@@ -45,9 +47,29 @@ class Ninjia {
 					riotRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
 					this.mixin('router', this._router); 
 				}
-			case 'context':
-				this.container = this._context;
 				break;
+
+			case 'context':
+				_.mixin(this._context, val)
+				break;
+
+			case 'routes':
+				if (!this._router || !this._router.hub) {
+					throw new Error(`ninjia compose routes expected a router hub.`)
+				}
+				this._router.hub.routes = val
+				this.router(this._router)
+				break;
+
+			case 'entry':
+				this[`_${prop}`] = val;
+				this.hub.root = val
+				// set provider for redux.
+				provider(this.store)(val)
+				break;
+
+			default:
+				this[`_${prop}`] = val;
 		}
 	}
 
@@ -102,17 +124,19 @@ class Ninjia {
 		return this.emitter.off.apply(this.emitter, args)
 	}
 
-	trigger(...args){
+	trigger(...args) {
 		return this.emitter.trigger.apply(this.emitter, args)
 	}
 
-	get container(){
+	get container() {
 		return this._container;
 	}
-	set container(val){
+
+	set container(val) {
 		this._container = val;
 	}
-	get hub(){
+
+	get hub() {
 		return this._router.hub;
 	}
 	get context(){
@@ -138,4 +162,4 @@ class Ninjia {
 const appCreator = params => new Ninjia(params);
 
 export default appCreator;
-export { connect, provide }; 
+export { connect, provider }; 
