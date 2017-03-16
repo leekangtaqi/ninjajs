@@ -34,24 +34,24 @@ app.start(async () => {
 
 ### API
 
-set(key, val) 
+**set(key, val)**
 
 * key \<string\>
-*  val  \<any\>
+* val  \<any\>
 
   buildin config - key -> value
   
-    1. env      \<enum\>    application environment - production, development, test
+    * env      \<enum\>    application environment - production, development, test
     
-    2. mode     \<enum\>    browser or history
+    * mode     \<enum\>    browser or history
     
-    3. context  \<object\>  application context obj (store, tags, ...others)
+    * context  \<object\>  application context obj (store, tags, ...others)
     
-    4. routes   \<object\>  expect a plain obj to describe the routes (more in below)
+    * routes   \<object\>  expect a plain obj to describe the routes (more in below)
     
-    5. entry    \<object\>  application entry component
+    * entry    \<object\>  application entry component
 
-registerWidget(options)
+**registerWidget(options)**
 
 * options.name     \<string\>
 * options.methods  \<array\>
@@ -65,7 +65,7 @@ registerWidget(options)
     methods: ['open']
   })
 
-start()
+**start()**
 
   all ready callback
 
