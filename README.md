@@ -40,16 +40,12 @@ app.start(async () => {
 * val  \<any\>
 
   buildin config - key -> value
-  
-    * env      \<enum\>    application environment - production, development, test
-    
-    * mode     \<enum\>    browser or history
-    
-    * context  \<object\>  application context obj (store, tags, ...others)
-    
-    * routes   \<object\>  expect a plain obj to describe the routes (more in below)
-    
-    * entry    \<object\>  application entry component
+  * env      \<enum\>    application environment - production, development, test
+  * mode     \<enum\>    browser or history
+  * context  \<object\>  application context obj (store, tags, ...others)
+  * routes   \<object\>  expect a plain obj to describe the routes (more in below)
+  * entry    \<object\>  application entry component
+
 
 **registerWidget(options)**
 
