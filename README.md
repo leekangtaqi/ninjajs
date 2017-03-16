@@ -104,7 +104,7 @@ export default class Todo extends riot.Tag {}
 
 ### Router
 
-### Define routes
+#### Define routes
 
 ```javascript
 import TodoList from '...path to component';
