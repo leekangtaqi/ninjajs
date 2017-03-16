@@ -1,17 +1,18 @@
 # NinjiaJs
 
-<img width="240" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
 
-frontend framework based on riot, redux.
+**Micro and elegant frontend framework**
+
 
 ---
 
-##Geting Started
+## Geting Started
 
-##Install
+## Install
 
 ```shell
-npm install ninjiajs
+$ npm install ninjiajs
 ```
 
 ## Usage
@@ -23,39 +24,17 @@ main.js
 ```javascript
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
-app.config = config
-
-app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
-
-app.set('mode', 'browser')
-
-app.set('context', { store: app.store, hub: router.hub, tags: {}, util: ...util})
-
-router.hub.routes = routes
-
-app.router(router)
+app.set('routes', routes)
 
 app.start(async () => {
-  /**
-   * set entry for the application.
-  */
-  let entry = new App(document.getElementById('app'), {store: app.store})
-
-  app.hub.root = entry
-
-  app.set('entry', entry)
-
-  /**
-   * set provider for redux.
-  */
-  provider(app.store)(app.entry)
+  // set entry for the application.
+  app.set('entry', new App(document.getElementById('app'), {store: app.store}))
 })
 ```
 
 ### Component
-===
 
-#### define component
+#### Define component
 
 ```javascript
 @Componnet // register this component to hub, in order to use it in html directly.
@@ -91,22 +70,23 @@ export default class Todo extends riot.Tag {}
 
 
 ### Router
-===
 
-### define routes
+### Define routes
+
 ```javascript
 import TodoList from '...path to component';
 
 export default {
-	component: App,
-	path: '',
-	children: [
-		{
-			path: '/',
-			component: TodoList,
-			defaultRoute: true
-		}
-	]}
+  component: App,
+  path: '',
+  children: [
+    {
+      path: '/',
+      component: TodoList,
+      defaultRoute: true
+    }
+  ]
+}
 ```
 #### Fields
 | field         | type          | desc  |
@@ -128,7 +108,7 @@ export default {
 | body     | Object      |
 | query    | Object      |
 
-#### router outlet in html
+#### Router outlet in html
 ```html
 <div class="component">
   <div>greeting!</div>
@@ -136,7 +116,7 @@ export default {
 </div>
 ```
 
-#### component life cycle about router
+#### Component life cycle about router
 
 | evts         | 
 | ------------ |
@@ -173,15 +153,16 @@ class Foo extends riot.Tag {
   // ...others
   
   // decorator onUse <Function>
-  // @param <Array | String>, when nav to this component, the methods will be invoke, get from opts.
-  //   each method will be injected a callback ( component will be present when the callback invoked ) and a router context
-  //   object. eg: const enterFoo = (next, ctx)
+  // @param <Array | String>, when nav to this component, the middlewares (defined in 'opts') will be invoke.
+  //   each middleware method will be injected a callback ( component will be present when the callback invoked ) and a  
+  //   router context object. 
+  eg: const enterFoo = (next, ctx)
   @onUse('enterFoo')
   onCreate(opts) {}
 }
 ```
 
-#### route hooks
+#### Route hooks
 
 1. history-pending
 
@@ -216,24 +197,24 @@ app.hub.subscribe('history-resolve', (from, to, ctx, hints, index) => {})
 #### routes.js
 ```javascript
 export default {
-	component: 'app',
-	children: [
-		{
-			path: '/',
-			defaultRoute: true,
-			component: 'count',
-		},
-		{
-			path: '/test',
-			component: 'test',
-			children: [
-				{
-					path: '/test2',
-					component: 'test2'
-				}
-			]
-		}
-	]
+  component: 'app',
+  children: [
+    {
+      path: '/',
+      defaultRoute: true,
+      component: 'count',
+    },
+    {
+      path: '/test',
+      component: 'test',
+      children: [
+        {
+          path: '/test2',
+          component: 'test2'
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -286,8 +267,9 @@ require('path-to-nest');
 
 ```
 
-##Example
+## More
 source for more detail    
 
-##QQ
-2811786667
+## Contact
+
+QQ: 2811786667
