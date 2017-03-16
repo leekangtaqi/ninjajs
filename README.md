@@ -36,7 +36,7 @@ app.start(async () => {
 
 **set(key, val)**
 
-* key \<string\>
+* key  \<string\>
 * val  \<any\>
 
   buildin config - key -> value
