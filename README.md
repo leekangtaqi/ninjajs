@@ -32,6 +32,43 @@ app.start(async () => {
 })
 ```
 
+### API
+
+set(key, val) 
+
+* key \<string\>
+*  val  \<any\>
+
+  buildin config - key -> value
+  
+    1. env      \<enum\>    application environment - production, development, test
+    
+    2. mode     \<enum\>    browser or history
+    
+    3. context  \<object\>  application context obj (store, tags, ...others)
+    
+    4. routes   \<object\>  expect a plain obj to describe the routes (more in below)
+    
+    5. entry    \<object\>  application entry component
+
+registerWidget(options)
+
+* options.name     \<string\>
+* options.methods  \<array\>
+  
+  allow user to control component with method invocation.
+  
+  eg: 
+  
+  app.registerWidget({
+    name: 'modal',
+    methods: ['open']
+  })
+
+start()
+
+  all ready callback
+
 ### Component
 
 #### Define component
