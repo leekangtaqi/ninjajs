@@ -24,30 +24,11 @@ main.js
 ```javascript
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
-//app.set('env', process.env.NODE_ENV ? process.env.NODE_ENV : 'development')
-
-//app.set('mode', 'browser')
-
-app.set('context', { store: app.store, hub: router.hub, tags: {}, util: ...util})
-
-router.hub.routes = routes
-
-app.router(router)
+app.set('routes', routes)
 
 app.start(async () => {
-  /**
-   * set entry for the application.
-  */
-  let entry = new App(document.getElementById('app'), {store: app.store})
-
-  app.hub.root = entry
-
-  app.set('entry', entry)
-
-  /**
-   * set provider for redux.
-  */
-  provider(app.store)(app.entry)
+  // set entry for the application.
+  app.set('entry', new App(document.getElementById('app'), {store: app.store}))
 })
 ```
 
