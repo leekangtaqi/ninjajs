@@ -153,7 +153,7 @@ export default {
 
 | evts         | 
 | ------------ |
-| open         |
+| enter         |
 | before-leave |
 | leave        |
 | leaved       |
@@ -165,7 +165,7 @@ eg:
 export default class Todo extends riot.Tag {
   // ...others
   onCreate(opts) {
-    this.on('open', ctx => {
+    this.on('enter', ctx => {
       // todo
     })
     this.on('before-leave', ctx => {
