@@ -225,7 +225,7 @@ class Foo extends riot.Tag {
 eg:
 
 ```
-app.hub.subscribe('history-pending', async (from, to, location, context, next) => {})
+app.hub.subscribe('history-pending', (from, to, location, context, next) => {})
 
 app.hub.subscribe('history-resolve', (from, to, context, routes, index) => {})
 ```
