@@ -197,32 +197,37 @@ class Foo extends riot.Tag {
 
 #### Route hooks
 
-1. history-pending
+**1. history-pending - callback(from, to, location, context[, next])**
 
-| params       | 
-| ------------ |
-| from         |
-| to           |
-| $location    |
-| context      |
-| next         |
+* from \<Object\> from which Component
+* to \<Object\> to which Component
+* location \<String\> uri
+* context \<Object\> context object
+  * req \<Object\> request object
+    * params \<Object\>
+    * body \<Object\>
+    * query \<Object\>
+* next \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
 
-2. history-resolve
+**2. history-resolve - callback(from, to, context, routes, index[, next])**
 
-| params      | 
-| ----------- |
-| from        |
-| to          |
-| ctx         |
-| hints       |
-| index       |
+* from \<Object\> from which Component
+* to \<Object\> to which Component
+* context \<Object\> context object
+  * req \<Object\> request object
+    * params \<Object\>
+    * body \<Object\>
+    * query \<Object\>
+* routes \<Object\> uris
+* index \<Number\> current index in uris
+* next \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
 
 eg:
 
 ```
-app.hub.subscribe('history-pending', async (from, to, $location, { req }, next) => {})
+app.hub.subscribe('history-pending', async (from, to, location, context, next) => {})
 
-app.hub.subscribe('history-resolve', (from, to, ctx, hints, index) => {})
+app.hub.subscribe('history-resolve', (from, to, context, routes, index) => {})
 ```
 
 ### Usage v2.* (Deprecated)
