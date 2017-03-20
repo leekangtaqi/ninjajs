@@ -36,21 +36,21 @@ app.start(async () => {
 
 **set(key, val)**
 
-* key  \<string\>
-* val  \<any\>
+* <code>key</code>  \<String\>
+* <code>val</code>  \<Any\>
 
   buildin config - key -> value
-  * env      \<enum\>    application environment - production, development, test
-  * mode     \<enum\>    browser or history
-  * context  \<object\>  application context obj (store, tags, ...others)
-  * routes   \<object\>  expect a plain obj to describe the routes (more in below)
-  * entry    \<object\>  application entry component
+  * <code>env</code>      \<Enum\>    application environment - production, development, test
+  * <code>mode</code>     \<Enum\>    browser or history
+  * <code>context</code>  \<Object\>  application context obj (store, tags, ...others)
+  * <code>routes</code>   \<Object\>  expect a plain obj to describe the routes (more in below)
+  * <code>entry</code>    \<Object\>  application entry component
 
 
 **registerWidget(options)**
 
-* options.name     \<string\>
-* options.methods  \<array\>
+* <code>options.name</code>     \<string\>
+* <code>options.methods</code>  \<array\>
   
   allow user to control component with method invocation.
   
