@@ -145,7 +145,7 @@ export default {
 ```html
 <div class="component">
   <div>greeting!</div>
-  <router-outlet></router-outlet> <!-- sub routers will replace it  -->
+  <router-outlet></router-outlet> <!-- sub routers will replace here  -->
 </div>
 ```
 
@@ -189,7 +189,7 @@ class Foo extends riot.Tag {
   // @param <Array | String>, when nav to this component, the middlewares (defined in 'opts') will be invoke.
   //   each middleware method will be injected a callback ( component will be present when the callback invoked ) and a  
   //   router context object. 
-  eg: const enterFoo = (next, ctx)
+  // eg: const enterFoo = (next, ctx)
   @onUse('enterFoo')
   onCreate(opts) {}
 }
