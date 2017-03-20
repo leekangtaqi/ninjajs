@@ -182,6 +182,7 @@ export default class Todo extends riot.Tag {
 ```
 
 ```javascript
+// Advanced Usage
 class Foo extends riot.Tag {
   // ...others
   
