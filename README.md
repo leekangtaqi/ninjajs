@@ -199,7 +199,7 @@ class Foo extends riot.Tag {
 
 **1. history-pending - callback(from, to, location, context[, next])**
 
-* from \<Object\> from which Component
+* <code>from</code> \<Object\> from which Component
 * to \<Object\> to which Component
 * location \<String\> uri
 * context \<Object\> context object
