@@ -200,27 +200,27 @@ class Foo extends riot.Tag {
 **1. history-pending - callback(from, to, location, context[, next])**
 
 * <code>from</code> \<Object\> from which Component
-* to \<Object\> to which Component
-* location \<String\> uri
-* context \<Object\> context object
-  * req \<Object\> request object
-    * params \<Object\>
-    * body \<Object\>
-    * query \<Object\>
-* next \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
+* <code>to</code> \<Object\> to which Component
+* <code>location</code> \<String\> uri
+* <code>context</code> \<Object\> context object
+  * <code>req</code> \<Object\> request object
+    * <code>params</code> \<Object\>
+    * <code>body</code> \<Object\>
+    * <code>query</code> \<Object\>
+* <code>next</code> \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
 
 **2. history-resolve - callback(from, to, context, routes, index[, next])**
 
-* from \<Object\> from which Component
-* to \<Object\> to which Component
-* context \<Object\> context object
-  * req \<Object\> request object
-    * params \<Object\>
-    * body \<Object\>
-    * query \<Object\>
-* routes \<Object\> uris
-* index \<Number\> current index in uris
-* next \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
+* <code>from</code> \<Object\> from which Component
+* <code>to</code> \<Object\> to which Component
+* <code>context</code> \<Object\> context object
+  * <code>req</code> \<Object\> request object
+    * <code>params</code> \<Object\>
+    * <code>body</code> \<Object\>
+    * <code>query</code> \<Object\>
+* <code>routes</code> \<Object\> uris
+* <code>index</code> \<Number\> current index in uris
+* <code>next</code> \<Function\> execution callback, if exists, the execution won`t be continue until next being executed
 
 eg:
 
