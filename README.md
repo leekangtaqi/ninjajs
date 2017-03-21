@@ -258,9 +258,23 @@ Attached to opts:
   * submit \<Function\> submit specific form manually.
   * forms \<Object\> forms map.
 
+* input fields & add class
+
+  * field
+    * $valid
+    * $invalid
+    * $dirty
+    * $pristine
+    * $error
+    * $originVal
+    * $val
+  * class
+    * f-valid
+    * f-invalid
+    * f-dirty
+    * f-pristine
+    
 * multi form validation supported
-
-
 
 #### Example
 
@@ -292,6 +306,18 @@ class Foo extends Ninjia.Component {
 ```
 
 ```html
+<style>
+  .f-valid {
+    border: green
+  }
+  .f-invalid {
+    border: red
+  }
+  .f-dirty {
+  }
+  .f-pristine {
+  }
+</style>
 <form ref="FormA">
   <p if="{ opts.forms.FormA.$submitted && opts.forms.FormA.username.$error.required }" class="help-block" >username required! </p>
   <input type="text" ref="username">
