@@ -15,7 +15,9 @@
     "url": "https://github.com/leekangtaqi/pagan.git"
   },
   "dependencies": {
-    "redux": "*"
+    "riot": "*",
+    "redux": "*",
+    "riot-route": "*"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

@@ -39,6 +39,25 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Component = function (_riot$Tag) {
+	_inherits(Component, _riot$Tag);
+
+	function Component() {
+		_classCallCheck(this, Component);
+
+		var _this = _possibleConstructorReturn(this, (Component.__proto__ || Object.getPrototypeOf(Component)).call(this));
+
+		_this.constructor.originName = _this.name;
+		return _this;
+	}
+
+	return Component;
+}(_riot2.default.Tag);
+
 var Ninjia = function () {
 	/**
   * @param container {Object} window in browser, or global in server.
@@ -134,7 +153,7 @@ var Ninjia = function () {
 	}, {
 		key: 'registerWidget',
 		value: function registerWidget(_ref2) {
-			var _this = this;
+			var _this2 = this;
 
 			var name = _ref2.name,
 			    methods = _ref2.methods;
@@ -147,7 +166,7 @@ var Ninjia = function () {
 			});
 			this._widgets[upperName] = {};
 			methods.forEach(function (method) {
-				_this._widgets[upperName][method] = function () {
+				_this2._widgets[upperName][method] = function () {
 					for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 						args[_key] = arguments[_key];
 					}
@@ -282,6 +301,9 @@ var Ninjia = function () {
 
 	return Ninjia;
 }();
+
+Ninjia.Component = Component;
+
 
 var appCreator = function appCreator(params) {
 	return new Ninjia(params);

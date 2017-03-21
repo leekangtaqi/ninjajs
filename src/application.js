@@ -6,7 +6,15 @@ import { provider, connect } from './riot-redux'
 import formReducer from './riot-redux-form/reducer'
 import _ from './util'
 
+class Component extends riot.Tag {
+	constructor () {
+		super()
+		this.constructor.originName = this.name
+	}
+}
+
 class Ninjia {
+	static Component = Component
 	/**
 	 * @param container {Object} window in browser, or global in server.
 	 */

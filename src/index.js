@@ -1,9 +1,10 @@
-import router, { onUse } from './riot-router/router';
-import Component from './riot-tag';
-import Application from './application';
-import { provider, Connect } from './riot-redux';
-import { View } from './riot-router-redux';
-import Form from './riot-redux-form';
+import router, { onUse } from './riot-router/router'
+import Component from './riot-tag'
+import Application from './application'
+import { provider, Connect } from './riot-redux'
+import { View } from './riot-router-redux'
+import Form from './riot-redux-form'
+import route from 'riot-route'
 
 let { hub } = router;
 
@@ -42,5 +43,6 @@ export {
 	Connect, 
 	View, 
 	Form,
-	onUse
+	onUse,
+	route
 }

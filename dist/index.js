@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.onUse = exports.Form = exports.View = exports.Connect = exports.provider = exports.Ninjia = exports.router = exports.Component = undefined;
+exports.route = exports.onUse = exports.Form = exports.View = exports.Connect = exports.provider = exports.Ninjia = exports.router = exports.Component = undefined;
 
 var _router = require('./riot-router/router');
 
@@ -24,6 +24,10 @@ var _riotRouterRedux = require('./riot-router-redux');
 var _riotReduxForm = require('./riot-redux-form');
 
 var _riotReduxForm2 = _interopRequireDefault(_riotReduxForm);
+
+var _riotRoute = require('riot-route');
+
+var _riotRoute2 = _interopRequireDefault(_riotRoute);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62,3 +66,4 @@ exports.Connect = _riotRedux.Connect;
 exports.View = _riotRouterRedux.View;
 exports.Form = _riotReduxForm2.default;
 exports.onUse = _router.onUse;
+exports.route = _riotRoute2.default;

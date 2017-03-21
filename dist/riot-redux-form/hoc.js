@@ -328,34 +328,30 @@ function Form(inputRulePairs) {
 
 					// resolve adds
 					if (adds && adds.length) {
-						(function () {
-							var formsToUpdate = [];
+						var formsToUpdate = [];
 
-							adds.forEach(function (f) {
-								_this11.addForm(store, f);
-								var inputs = _this11.getInputs(_this11.refs[f]);
-								var inputsToUpdate = inputs.map(function (input) {
-									return _this11.addInput(store, input, f);
-								});
-								formsToUpdate.push({ form: f, inputs: inputsToUpdate });
+						adds.forEach(function (f) {
+							_this11.addForm(store, f);
+							var inputs = _this11.getInputs(_this11.refs[f]);
+							var inputsToUpdate = inputs.map(function (input) {
+								return _this11.addInput(store, input, f);
 							});
+							formsToUpdate.push({ form: f, inputs: inputsToUpdate });
+						});
 
-							formsToUpdate.length && store.dispatch({ type: 'forms/inputs/add', payload: formsToUpdate });
-						})();
+						formsToUpdate.length && store.dispatch({ type: 'forms/inputs/add', payload: formsToUpdate });
 					}
 
 					// resolve dels remove all listen handlers
 					if (dels && dels.length) {
-						(function () {
-							var formsToRemove = [];
+						var formsToRemove = [];
 
-							dels.forEach(function (f) {
-								_this11.delForm(store, f);
-								formsToRemove.push({ form: f });
-							});
+						dels.forEach(function (f) {
+							_this11.delForm(store, f);
+							formsToRemove.push({ form: f });
+						});
 
-							store.dispatch({ type: 'forms/remove', payload: formsToRemove });
-						})();
+						store.dispatch({ type: 'forms/remove', payload: formsToRemove });
 					}
 
 					// extract not add and del form, check input struct
@@ -365,41 +361,37 @@ function Form(inputRulePairs) {
 						    _dels = _resolveInputsInFormL.dels;
 
 						if (_adds && _adds.length) {
-							(function () {
-								var formsToUpdate = [];
+							var _formsToUpdate = [];
 
-								_adds.forEach(function (_ref) {
-									var formName = _ref.formName,
-									    inputs = _ref.inputs;
+							_adds.forEach(function (_ref) {
+								var formName = _ref.formName,
+								    inputs = _ref.inputs;
 
-									if (inputs && inputs.length) {
-										var inputsToUpdate = inputs.map(function (input) {
-											return _this11.addInput(store, _this11.refs[input], formName);
-										});
-										formsToUpdate.push({ form: formName, inputs: inputsToUpdate });
-									}
-								});
-								formsToUpdate.length && store.dispatch({ type: 'forms/inputs/add', payload: formsToUpdate });
-							})();
+								if (inputs && inputs.length) {
+									var inputsToUpdate = inputs.map(function (input) {
+										return _this11.addInput(store, _this11.refs[input], formName);
+									});
+									_formsToUpdate.push({ form: formName, inputs: inputsToUpdate });
+								}
+							});
+							_formsToUpdate.length && store.dispatch({ type: 'forms/inputs/add', payload: _formsToUpdate });
 						}
 
 						if (_dels && _dels.length) {
-							(function () {
-								var formsToRemove = [];
+							var _formsToRemove = [];
 
-								_dels.forEach(function (formName, inputs) {
-									if (inputs && inputs.length) {
-										inputs.forEach(function (inputName) {
-											_this11.refs[inputName].forEach(function (input) {
-												return _this11.delInput(input);
-											});
+							_dels.forEach(function (formName, inputs) {
+								if (inputs && inputs.length) {
+									inputs.forEach(function (inputName) {
+										_this11.refs[inputName].forEach(function (input) {
+											return _this11.delInput(input);
 										});
+									});
 
-										formsToRemove.push({ form: formName, inputs: inputs });
-									}
-								});
-								formsToRemove.length && store.dispatch({ type: 'forms/inputs/remove', payload: formsToRemove });
-							})();
+									_formsToRemove.push({ form: formName, inputs: inputs });
+								}
+							});
+							_formsToRemove.length && store.dispatch({ type: 'forms/inputs/remove', payload: _formsToRemove });
 						}
 					}
 				}

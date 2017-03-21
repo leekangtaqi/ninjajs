@@ -408,8 +408,6 @@ var Hub = function () {
     }, {
         key: 'enterTags',
         value: function enterTags(enters, index) {
-            var _this2 = this;
-
             if (!enters || !enters.length) {
                 return;
             }
@@ -429,51 +427,49 @@ var Hub = function () {
                 (0, _invariant2.default)('404');
                 recurEnter(enters.slice(1));
             } else {
-                (function () {
-                    var done = function done() {
-                        var _this3 = this;
+                var _done = function _done() {
+                    var _this2 = this;
 
-                        if (!tag || !tag.isMounted) {
-                            var outletEl = null;
-                            if (route.components) {
-                                var componentName = ctx.req.query.component;
-                                var Constr = route.components[componentName];
-                                outletEl = outlet.parent.root.querySelector('div[data-tag-name="' + Constr.displayName + '"]');
-                                tag = new Constr(outletEl, { parent: outlet.parent });
-                                if (!Constr) {
-                                    (0, _invariant2.default)('component provider expected a component.');
-                                    return this.routeToDefault(true);
-                                }
-                            } else {
-                                outletEl = outlet.parent.root.querySelector('div[data-tag-name="' + component.displayName + '"]');
-                                tag = new route.component(outletEl, { parent: outlet.parent });
+                    if (!tag || !tag.isMounted) {
+                        var outletEl = null;
+                        if (route.components) {
+                            var componentName = ctx.req.query.component;
+                            var Constr = route.components[componentName];
+                            outletEl = outlet.parent.root.querySelector('div[data-tag-name="' + Constr.displayName + '"]');
+                            tag = new Constr(outletEl, { parent: outlet.parent });
+                            if (!Constr) {
+                                (0, _invariant2.default)('component provider expected a component.');
+                                return this.routeToDefault(true);
                             }
-
-                            if (tag) {
-                                tag.$routePath = path;
-                                route.tag = tag;
-                                outlet.update();
-                            }
+                        } else {
+                            outletEl = outlet.parent.root.querySelector('div[data-tag-name="' + component.displayName + '"]');
+                            tag = new route.component(outletEl, { parent: outlet.parent });
                         }
 
                         if (tag) {
-                            return this.routeTo(route, ctx, false, index, function () {
-                                _this3.enterTags.apply(_this3, [enters.slice(1), ++index]);
-                            });
+                            tag.$routePath = path;
+                            route.tag = tag;
+                            outlet.update();
                         }
-                    };
-
-                    _this2.state.hint = path;
-                    var outletPoint = _this2.refinedRoutes.filter(function (r) {
-                        return r.id === route.parent;
-                    })[0];
-                    var outlet = (outletPoint && outletPoint.tag || _this2.root).tags['router-outlet'];
-                    if (!outlet.$isMounted) {
-                        outlet.one('$mounted', done.bind(_this2));
-                    } else {
-                        done.apply(_this2);
                     }
-                })();
+
+                    if (tag) {
+                        return this.routeTo(route, ctx, false, index, function () {
+                            _this2.enterTags.apply(_this2, [enters.slice(1), ++index]);
+                        });
+                    }
+                };
+
+                this.state.hint = path;
+                var outletPoint = this.refinedRoutes.filter(function (r) {
+                    return r.id === route.parent;
+                })[0];
+                var outlet = (outletPoint && outletPoint.tag || this.root).tags['router-outlet'];
+                if (!outlet.$isMounted) {
+                    outlet.one('$mounted', _done.bind(this));
+                } else {
+                    _done.apply(this);
+                }
             }
         }
 
@@ -489,7 +485,7 @@ var Hub = function () {
         value: function routeTo(route, ctx) {
             var redirect = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-            var _this4 = this;
+            var _this3 = this;
 
             var index = arguments[3];
             var cb = arguments[4];
@@ -527,7 +523,7 @@ var Hub = function () {
 
             if (route.resolve) {
                 return route.resolve.apply(route.tag, [function (data) {
-                    _this4.routeToDone(data, ctx, addons, cb);
+                    _this3.routeToDone(data, ctx, addons, cb);
                 }, ctx]);
             }
 
@@ -545,7 +541,7 @@ var Hub = function () {
     }, {
         key: 'routeToDone',
         value: function routeToDone(data, ctx, _ref2, cb) {
-            var _this5 = this;
+            var _this4 = this;
 
             var hints = _ref2.hints,
                 req = _ref2.req,
@@ -564,7 +560,7 @@ var Hub = function () {
             var callbackInvokeCount = 0;
             var callback = function callback() {
                 callbackInvokeCount++;
-                var listeners = _this5.evtListeners.filter(function (_ref3) {
+                var listeners = _this4.evtListeners.filter(function (_ref3) {
                     var evt = _ref3.evt,
                         fn = _ref3.fn;
 
@@ -598,7 +594,7 @@ var Hub = function () {
     }, {
         key: 'routeSuccess',
         value: function routeSuccess(data, ctx, _ref4, cb) {
-            var _this6 = this;
+            var _this5 = this;
 
             var hints = _ref4.hints,
                 req = _ref4.req,
@@ -612,7 +608,7 @@ var Hub = function () {
             var callbackInvokeCount = 0;
             var callback = function callback() {
                 callbackInvokeCount++;
-                var listeners = _this6.evtListeners.filter(function (_ref5) {
+                var listeners = _this5.evtListeners.filter(function (_ref5) {
                     var evt = _ref5.evt,
                         fn = _ref5.fn;
 
