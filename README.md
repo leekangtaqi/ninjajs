@@ -252,14 +252,10 @@ Register customer validators
 #### Detail
 
 * Integrate with Redux
-
 A action will be dispatched when interact with inputs.
 You will get corrent value in state and opts.
-
 Attached to opts: 
-
   * submit \<Function\> submit specific form manually.
-  
   * forms \<Object\> forms map.
 
 * multi form validation supported
