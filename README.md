@@ -71,8 +71,7 @@ app.start(async () => {
 
 ```javascript
 @Componnet // register this component to hub, in order to use it in html directly.
-export default class Todo extends riot.Tag {
-  static originName = 'todo'
+export default class Todo extends Ninjia.Component {
   
   get name() {
     return 'todo'
