@@ -97,7 +97,7 @@ redux like:
     ...actions
   })
 )
-export default class Todo extends riot.Tag {}
+export default class Todo extends Ninjia.Component {}
 ```
 
 
@@ -161,7 +161,7 @@ eg:
 
 ```javascript
 @View // this decorator specify that component will be a view, give the component relevant features
-export default class Todo extends riot.Tag {
+export default class Todo extends Ninjia.Component {
   // ...others
   onCreate(opts) {
     this.on('enter', ctx => {
@@ -182,7 +182,7 @@ export default class Todo extends riot.Tag {
 
 ```javascript
 // Advanced Usage
-class Foo extends riot.Tag {
+class Foo extends Ninjia.Component {
   // ...others
   
   // decorator onUse <Function>
@@ -230,6 +230,78 @@ app.hub.subscribe('history-pending', (from, to, location, context, next) => {})
 app.hub.subscribe('history-resolve', (from, to, context, routes, index) => {})
 ```
 
+### Form
+
+#### Buildin rules
+
+* required
+* max
+* min
+* maxlength
+* minlength
+* pattern
+
+#### API
+
+* registerValidators(name, fn)
+  * name \<string\>
+  * fn \<Function\>
+  
+Register customer validators  
+
+#### Detail
+
+* Integrate with Redux
+
+A action will be dispatched when interact with inputs.
+You will get corrent value in state and opts.
+
+Attached to opts: 
+
+  * submit \<Function\> submit specific form manually.
+  
+  * forms \<Object\> forms map.
+
+* multi form validation supported
+
+
+
+#### Example
+
+```javascript
+@Form({
+  username: {
+    required: true,
+    minlength: 2,
+    maxlength: 20
+  },
+  password: {
+    required: true,
+    min: 1,
+    max: 10
+  },
+  address: {
+    pattern: /.*/
+  }
+})
+class Foo extends Ninjia.Component {
+  async onSubmit() {
+    e.preventDefault();
+    this.opts.submit('FormA')   // submit specific form manually
+    if (this.opts.forms.FormA.$invalid) {
+      return;
+    }
+  }
+}
+```
+
+```html
+<form ref="FormA">
+  <p if="{ opts.forms.FormA.$submitted && opts.forms.FormA.username.$error.required }" class="help-block" >username required! </p>
+  <input type="text" ref="username">
+</form>
+``` 
+
 ### Usage v2.* (Deprecated)
 
 #### routes.js
@@ -255,8 +327,6 @@ export default {
   ]
 }
 ```
-
-
 
 ```javascript
 //main.js
