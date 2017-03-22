@@ -15,7 +15,7 @@ const defaultMergeOpts = (stateOpts, dispatchOpts, parentOpts) => ({
 });
 
 const getDisplayName = WrappedComponent => {
-    return WrappedComponent.displayName || _.lineToCamel(WrappedComponent.originName) || 'Component';
+    return WrappedComponent.displayName || _.lineToCamel(WrappedComponent.name) || 'Component';
 }
 
 let errorObject = { value: null };
@@ -120,7 +120,7 @@ export default function Connect(mapStateToOpts, mapDispatchToOpts, mergeOpts, op
 
         class Connect extends WrappedComponent {
             get name() {
-                return 'connect-' + super.name || WrappedComponent.name
+                return 'connect-' + (super.name || WrappedComponent.name).toLowerCase()
             }
 
             onCreate(opts) {

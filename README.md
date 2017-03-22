@@ -22,13 +22,15 @@ $ npm install ninjiajs
 main.js
 
 ```javascript
+import App from 'path to xxx component'
+
 let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
 app.set('routes', routes)
 
 app.start(async () => {
   // set entry for the application.
-  app.set('entry', new App(document.getElementById('app'), {store: app.store}))
+  app.set('entry', new App(document.getElementById('app')))
 })
 ```
 

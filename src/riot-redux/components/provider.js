@@ -1,4 +1,5 @@
-import invariant from '../util/invariant';
+import invariant from '../util/invariant'
+import riot from 'riot'
 
 let provider = null;
 

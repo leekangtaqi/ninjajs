@@ -6,19 +6,11 @@ import { provider, connect } from './riot-redux'
 import formReducer from './riot-redux-form/reducer'
 import _ from './util'
 
-class Component extends riot.Tag {
-	constructor () {
-		super()
-		this.constructor.originName = this.name
-	}
-}
-
 class Ninjia {
-	static Component = Component
 	/**
 	 * @param container {Object} window in browser, or global in server.
 	 */
-	constructor({ container, reducer, middlewares, state = {} }){
+	constructor({ container, reducer = {}, middlewares = {}, state = {} }){
 		if(!container){
 			throw new Error(`a container expected.`);
 		}
@@ -109,8 +101,14 @@ class Ninjia {
 	}
 
 	async start(bootstrap){
+		if (!bootstrap || typeof bootstrap != 'function') {
+			throw new Error(`application start expected a callback`);
+		}
+		if (!this._router) {
+			throw new Error(`application start expected routes`);
+		}
 		await bootstrap();
-		if(!this.entry){
+		if (!this.entry) {
 			throw new Error(`application expected a entry component`);
 		}
 		this._router.hub.startup();
@@ -167,7 +165,10 @@ class Ninjia {
 	}
 }
 
-const appCreator = params => new Ninjia(params);
+const appCreator = params => new Ninjia(params)
+const uiLib = riot
 
-export default appCreator;
-export { connect, provider }; 
+appCreator.Component = riot.Tag
+
+export default appCreator
+export { connect, provider, uiLib }

@@ -12,23 +12,34 @@ function extractPrototypes(s) {
 }
 
 export default function Component(WrappedComponent) {
-	if (!WrappedComponent.originName) {
+	if (!WrappedComponent.name) {
 		throw new Error(`register decorator expected a origin name.`)
 	}
 
 	if (!WrappedComponent.prototype.tmpl) {
 		throw new Error(`register decorator expected a template.`)
 	}
+	if ( !WrappedComponent.prototype.name ) {
+		WrappedComponent.prototype.name = WrappedComponent.name.toLowerCase()
+	}
+	
 	riot.tag(
-		WrappedComponent.originName,
+		WrappedComponent.name.toLowerCase(),
 		WrappedComponent.prototype.tmpl,
 		WrappedComponent.prototype.css || '',
 		WrappedComponent.prototype.attrs || '',
 		function componentConstructor(opts) {
 			this.mixin(extractPrototypes(WrappedComponent.prototype))
-			this.onCreate.apply(this, [opts]);
+			function noop(){}
+			(this.onCreate || WrappedComponent.prototype.onCreate).apply(this, [opts])
 		}
 	)
 	
 	return WrappedComponent;
+}
+
+function mixin(source){
+	for (let p in source) {
+		this[p] = source[p]
+	}
 }

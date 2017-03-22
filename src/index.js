@@ -1,6 +1,6 @@
 import router, { onUse } from './riot-router/router'
 import Component from './riot-tag'
-import Application from './application'
+import Application, { uiLib } from './application'
 import { provider, Connect } from './riot-redux'
 import { View } from './riot-router-redux'
 import Form from './riot-redux-form'
@@ -44,5 +44,6 @@ export {
 	View, 
 	Form,
 	onUse,
-	route
+	route,
+	uiLib
 }

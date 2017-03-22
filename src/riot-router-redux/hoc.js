@@ -48,13 +48,13 @@ function hoistStatics(targetComponent, sourceComponent, customStatics) {
     return targetComponent;
 }
 
-const getDisplayName = WrappedComponent => WrappedComponent.displayName || _.lineToCamel(WrappedComponent.originName) || 'Component';
+const getDisplayName = WrappedComponent => WrappedComponent.displayName || _.lineToCamel(WrappedComponent.name) || 'Component';
 
 export default function View(WrappedComponent) {
 		const connectDisplayName = `View(${getDisplayName(WrappedComponent)})`;
 		class View extends WrappedComponent {
 			get name() {
-				return _.camelToLine(super.name);
+				return _.camelToLine(super.name.toLowerCase());
 			}
 
 			get tmpl() {

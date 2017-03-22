@@ -10,7 +10,7 @@ export default function Form(inputRulePairs) {
 	return function wrapComponent (WrappedComponent) {
 		return class Form extends WrappedComponent {
 			get name() {
-				return 'form-' + (super.name || WrappedComponent.name);
+				return 'form-' + (super.name || WrappedComponent.name).toLowerCase();
 			}
 			onCreate(opts) {
 				super.onCreate(opts);
