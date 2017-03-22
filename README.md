@@ -15,6 +15,14 @@
 $ npm install ninjiajs
 ```
 
+## Quick Start
+
+```
+$ npm run dev
+```
+
+http://localhost:8080
+
 ## Usage
 
 ### Startup
