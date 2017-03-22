@@ -1,6 +1,6 @@
 {
   "name": "ninjiajs",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "frontend framework base on riot and redux",
   "main": "./dist/bundle.js",
   "author": "leekangtaqi",
