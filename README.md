@@ -15,7 +15,7 @@
 $ npm install ninjiajs
 ```
 
-## Quick Start
+## Pay a glance
 
 ```
 $ npm run dev
@@ -82,10 +82,6 @@ app.start(async () => {
 ```javascript
 @Componnet // register this component to hub, in order to use it in html directly.
 export default class Todo extends Ninjia.Component {
-  
-  get name() {
-    return 'todo'
-  }
 
   get tmpl() {
     return require('path to template of component');
@@ -305,6 +301,7 @@ Attached to opts:
   }
 })
 class Foo extends Ninjia.Component {
+  // ...others
   async onSubmit() {
     e.preventDefault();
     this.opts.submit('FormA')   // submit specific form manually
