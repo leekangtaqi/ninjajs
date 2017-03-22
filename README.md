@@ -15,7 +15,7 @@
 $ npm install ninjiajs
 ```
 
-## Pay a glance
+## Pay A Glance
 
 ```
 $ npm run dev
