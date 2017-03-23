@@ -5,7 +5,9 @@
 </p>
 <p align="center"> <b>Micro and elegant frontend framework</b></p>
 
-
+Like a ninja, the ninjajs dexterous and elegant, and its body full of magic weapons that simple but powerful.
+Ninjajs will help you to use the simple way to build complex systems.
+<b>"Practical but not fancy" is its talisman.</b>
 
 ## Geting Started
 
