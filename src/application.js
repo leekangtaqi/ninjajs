@@ -6,7 +6,7 @@ import { provider, connect } from './riot-redux'
 import formReducer from './riot-redux-form/reducer'
 import _ from './util'
 
-class Ninjia {
+class Ninja {
 	/**
 	 * @param container {Object} window in browser, or global in server.
 	 */
@@ -55,7 +55,7 @@ class Ninjia {
 
 			case 'routes':
 				if (!this._router || !this._router.hub) {
-					throw new Error(`ninjia compose routes expected a router hub.`)
+					throw new Error(`ninja compose routes expected a router hub.`)
 				}
 				this._router.hub.routes = val
 				this.router(this._router)
@@ -165,7 +165,7 @@ class Ninjia {
 	}
 }
 
-const appCreator = params => new Ninjia(params)
+const appCreator = params => new Ninja(params)
 const uiLib = riot
 
 appCreator.Component = riot.Tag

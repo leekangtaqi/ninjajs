@@ -38,7 +38,7 @@ hub.setHandler(function handler(direction, tag){
 export { 
 	Component, 
 	router, 
-	Application as Ninjia, 
+	Application as Ninja, 
 	provider, 
 	Connect, 
 	View, 

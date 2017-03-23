@@ -1,4 +1,4 @@
-import { Ninjia, Component, uiLib, Connect } from '../src/index'
+import { Ninja, Component, uiLib, Connect } from '../src/index'
 
 let reducer = {
 	count: (count = 0, action) => {
@@ -15,7 +15,7 @@ let reducer = {
 	count: state.count
 }))
 @Component
-class Tag extends Ninjia.Component {
+class Tag extends Ninja.Component {
 	get tmpl () {
 		return `
 			<h1>Greeting !</h1>	
@@ -29,7 +29,7 @@ class Tag extends Ninjia.Component {
 	}
 }
 
-let app = Ninjia({ container: window, store: {}, reducer })
+let app = Ninja({ container: window, store: {}, reducer })
 
 app.set('routes', {})
 
