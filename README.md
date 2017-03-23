@@ -1,6 +1,6 @@
 # NinjaJs
 
-<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/logo.png"/>
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/ninja.png"/>
 
 **Micro and elegant frontend framework**
 
