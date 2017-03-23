@@ -1,11 +1,11 @@
 <p align="center">
 <a target="_blank">
-<img width="496" style="margin: 0" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/ninja.png"/>
+<img width="496" style="margin: 0" src="https://github.com/leekangtaqi/ninjajs/raw/master/assets/images/ninja.png"/>
 </a>
 </p>
 <p align="center"> <b>Micro and elegant frontend framework</b></p>
 
-Like a ninja, the ninjajs dexterous and elegant, and its body full of magic weapons that simple but powerful.
+Like a ninja, Ninjajs dexterous and elegant, and its body full of magic weapons that simple but powerful.
 Ninjajs will help you to use the simple way to build complex systems.
 <b>"Practical but not fancy" is its talisman.</b>
 
@@ -14,7 +14,7 @@ Ninjajs will help you to use the simple way to build complex systems.
 ## Install
 
 ```shell
-$ npm install ninjiajs
+$ npm install ninjajs
 ```
 
 ## Pay A Glance
@@ -34,7 +34,7 @@ main.js
 ```javascript
 import App from 'path to xxx component'
 
-let app = Ninjia({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
+let app = Ninja({container: window, reducer, middlewares, state: {}}) // container, reducer, middlewares, initialState
 
 app.set('routes', routes)
 
@@ -83,7 +83,7 @@ app.start(async () => {
 
 ```javascript
 @Componnet // register this component to hub, in order to use it in html directly.
-export default class Todo extends Ninjia.Component {
+export default class Todo extends Ninja.Component {
 
   get tmpl() {
     return require('path to template of component');
@@ -105,7 +105,7 @@ redux like:
     ...actions
   })
 )
-export default class Todo extends Ninjia.Component {}
+export default class Todo extends Ninja.Component {}
 ```
 
 
@@ -169,7 +169,7 @@ eg:
 
 ```javascript
 @View // this decorator specify that component will be a view, give the component relevant features
-export default class Todo extends Ninjia.Component {
+export default class Todo extends Ninja.Component {
   // ...others
   onCreate(opts) {
     this.on('enter', ctx => {
@@ -190,7 +190,7 @@ export default class Todo extends Ninjia.Component {
 
 ```javascript
 // Advanced Usage
-class Foo extends Ninjia.Component {
+class Foo extends Ninja.Component {
   // ...others
   
   // decorator onUse <Function>
@@ -302,7 +302,7 @@ Attached to opts:
     pattern: /.*/
   }
 })
-class Foo extends Ninjia.Component {
+class Foo extends Ninja.Component {
   // ...others
   async onSubmit() {
     e.preventDefault();
@@ -361,9 +361,9 @@ export default {
 
 ```javascript
 //main.js
-import { router Ninjia } from 'ninjiajs';
+import { router Ninja } from 'ninjajs';
 
-let app = new Ninjia(container, reducer, middlewares, initialState);  // create ninjia application
+let app = new Ninja(container, reducer, middlewares, initialState);  // create ninja application
 
 app.set('env', process.env.NODE_ENV === 'production' ? 'production' : 'development');
 
@@ -390,7 +390,7 @@ require('path-to-nest');
   <div>Hello World</div>
   <router-outlet></router-outlet>
   
-  import { connect } from 'ninjiajs';
+  import { connect } from 'ninjajs';
   
   connect(              //redux like
     state => ({}),
@@ -408,9 +408,9 @@ require('path-to-nest');
 
 ## Who's using
 
-<img width="120" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91pintuan.png"/>
+<img width="120" src="https://github.com/leekangtaqi/ninjajs/raw/master/assets/images/91pintuan.png"/>
 
-<img width="120" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91songli.png"/>
+<img width="120" src="https://github.com/leekangtaqi/ninjajs/raw/master/assets/images/91songli.png"/>
 
 ## More
 source for more detail    
