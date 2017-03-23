@@ -406,9 +406,9 @@ require('path-to-nest');
 
 ## Who's using
 
-<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91pintuan.png"/>
+<img width="120" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91pintuan.png"/>
 
-<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91songli.png"/>
+<img width="120" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91songli.png"/>
 
 ## More
 source for more detail    
