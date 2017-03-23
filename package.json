@@ -1,5 +1,5 @@
 {
-  "name": "ninjiajs",
+  "name": "ninjajs",
   "version": "3.4.2",
   "description": "frontend framework base on riot and redux",
   "main": "./dist/bundle.js",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/leekangtaqi/pagan.git"
+    "url": "https://github.com/leekangtaqi/ninjajs.git"
   },
   "dependencies": {
     "riot": "*",

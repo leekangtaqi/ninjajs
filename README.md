@@ -1,4 +1,4 @@
-# NinjiaJs
+# NinjaJs
 
 <img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/logo.png"/>
 
