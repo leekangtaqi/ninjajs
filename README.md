@@ -412,6 +412,10 @@ require('path-to-nest');
 
 <img width="120" src="https://github.com/leekangtaqi/ninjajs/raw/master/assets/images/91songli.png"/>
 
+## Buy us a coffee
+
+<img width="120" src="https://github.com/leekangtaqi/ninjajs/raw/master/assets/images/qrcode.jpg"/>
+
 ## More
 source for more detail    
 
