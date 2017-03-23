@@ -1,6 +1,6 @@
 # NinjiaJs
 
-<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/logo.png"/>
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/logo.png"/>
 
 **Micro and elegant frontend framework**
 
@@ -403,6 +403,12 @@ require('path-to-nest');
 </app>
 
 ```
+
+## Who's using
+
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91pintuan.png"/>
+
+<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/91songli.png"/>
 
 ## More
 source for more detail    
