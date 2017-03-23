@@ -1,11 +1,11 @@
 # NinjaJs
 
-<img width="180" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/ninja.png"/>
-
-**Micro and elegant frontend framework**
-
-
----
+<p align="center">
+<a target="_blank">
+<img width="496" style="margin: 0" src="https://github.com/leekangtaqi/ninjiajs/raw/master/assets/images/ninja.png"/>
+</a>
+</p>
+<p align="center"> Micro and elegant frontend framework</p>
 
 ## Geting Started
 
