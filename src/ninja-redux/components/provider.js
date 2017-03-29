@@ -14,7 +14,7 @@ export default function provide(store) {
 
 	return function(entry) {
 		invariant((typeof entry === 'object' && entry instanceof riot.Tag), `
-			provider expect a riot tag instead of ${entry}`);
+			provider expect a tag instead of ${entry}`);
 		entry.opts.store = store;
 		provider = entry;
 		return provider;

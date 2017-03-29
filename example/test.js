@@ -1,3 +1,24 @@
+/*import { render, h, Component } from 'preact';
+
+class Test extends Component {
+	componentWillMount() {
+		
+	}
+	render() {
+		return (
+			<div onclick="{xxx}">
+				<ul className="li">
+					<li>li1</li>
+					<li>li2</li>
+					22222
+					4114
+				</ul>
+				22222
+			</div>
+		)
+	}
+}
+render(<Test>test</Test>, document.getElementById('app'))*/
 import { Ninja, Component, uiLib, Connect } from '../src/index'
 
 let reducer = {

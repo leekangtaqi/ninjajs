@@ -1,4 +1,4 @@
-import { getProvider } from '../riot-redux/components/provider';
+import { getProvider } from '../ninja-redux/components/provider';
 import _ from '../util';
 
 const isShow = (views, tag) => {

@@ -1,9 +1,9 @@
-import router, { onUse } from './riot-router/router'
-import Component from './riot-tag'
+import router, { onUse } from './ninja-router/router'
+import Component from './ninja-tag'
 import Application, { uiLib } from './application'
-import { provider, Connect } from './riot-redux'
-import { View } from './riot-router-redux'
-import Form from './riot-redux-form'
+import { provider, Connect } from './ninja-redux'
+import { View } from './ninja-router-redux'
+import Form from './ninja-redux-form'
 import route from 'riot-route'
 
 let { hub } = router;

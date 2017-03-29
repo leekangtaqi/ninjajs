@@ -1,9 +1,9 @@
 import riot from 'riot'
 import { configureStore } from './store'
-import riotRouterRedux from './riot-router-redux'
-import router from './riot-router/router'
-import { provider, connect } from './riot-redux'
-import formReducer from './riot-redux-form/reducer'
+import ninjaRouterRedux from './ninja-router-redux'
+import router from './ninja-router/router'
+import { provider, connect } from './ninja-redux'
+import formReducer from './ninja-redux-form/reducer'
 import _ from './util'
 
 class Ninja {
@@ -44,7 +44,7 @@ class Ninja {
 				}
 				this._store = configureStore(initialState, this.reducer, this.middlewares, this._mode);
 				if(this._router){
-					riotRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
+					ninjaRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
 					this.mixin('router', this._router); 
 				}
 				break;
@@ -83,7 +83,7 @@ class Ninja {
 	router(router){
 		this._router = router;
 		router.app = this;
-		riotRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
+		ninjaRouterRedux.syncHistoryWithStore(this._router.hub, this._store);
 		return this;
 	}
 

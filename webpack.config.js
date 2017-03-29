@@ -12,14 +12,14 @@ let baseConfig = {
 				]
 			},
 			{
-				test: /\.js$/,
+				test: /\.jsx|js$/,
 				exclude: [/node_modules/],
 				use: { 
 					loader: 'babel-loader',
 					options: {
 						compact: true,
 						presets: ["es2015", "stage-0"],
-						plugins: ['transform-decorators-legacy', 'transform-decorators']
+						plugins: ['transform-decorators-legacy', 'transform-decorators', ["transform-react-jsx", { "pragma":"h" }]]
 					} 
 				},
 			}

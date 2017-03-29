@@ -4,6 +4,7 @@
     "syntax-async-functions",
     "transform-decorators-legacy",
     "transform-regenerator",
-    "transform-decorators"
+    "transform-decorators",
+    ["transform-react-jsx", { "pragma":"h" }]
   ]
 }

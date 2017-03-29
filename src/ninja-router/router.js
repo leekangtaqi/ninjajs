@@ -7,7 +7,7 @@ import Util from './util'
 import decorators from './decorators'
 
 /**
- * Riot router version 4.
+ * router version 4.
  * updates v2:
  *  1. change route rule, delete underline when path is param.
  *  2. routes change data structure from map to array. 
@@ -20,7 +20,7 @@ import decorators from './decorators'
  */
 
 /**
- * Riot router version 5.
+ * router version 5.
  * updates v5:
  *  1. deal with route mildly. save the hints previously, and then
  *    compare with current hints. no modify with no change. leave
@@ -188,7 +188,7 @@ class Hub {
     /**
      * Recursive collect route hints
      * @param context {Object}
-     * @param node {Object} riot tag
+     * @param node {Object} tag
      * @param routes {Object}
      * @param components {Array}
      * @param index {Number}
@@ -527,7 +527,7 @@ class Hub {
     }
 
     /**
-     * Exchange control flow to hub from riot router
+     * Exchange control flow to hub from router
      * @param url (String)
      * @return this
      */
