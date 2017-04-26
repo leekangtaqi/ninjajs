@@ -1,4 +1,6 @@
-class Component {
+import { enqueueRender } from './render-queue';
+
+export default class Component {
 	constructor(props, context) {
 		this.context = context
 		this.props = props
@@ -12,7 +14,7 @@ class Component {
 
 	setState(state, callback) {
 		let s = this.state
-		if (!this.prevState) this.prevState = clone(s)
+		if (!this.prevState) this.prevState = Object.assign({}, s)
 		if (callback) (this._renderCallbacks = (this._renderCallbacks || []))
 		enqueueRender(this)
 	}
