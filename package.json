@@ -46,7 +46,7 @@
     "koa-sendfile": "^2.0.0",
     "koa-static": "^3.0.0",
     "webpack": "^2.3.0",
-    "webpack-dev-server": "^2.4.2"
+    "webpack-dev-server": "^3.1.11"
   },
   "engines": {
     "node": ">=6.2.1"
